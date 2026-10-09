@@ -1,189 +1,625 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PACZKA HUB — Logowanie</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #0b0b12;
-      color: #f5f5ff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .panel {
-      width: 100%;
-      max-width: 420px;
-      padding: 28px;
-      border: 1px solid #37304f;
-      border-radius: 20px;
-      background: #151420;
-      box-shadow: 0 0 35px #7040ff20;
-    }
-    h1 { text-align: center; margin-top: 0; }
-    .subtitle { text-align: center; color: #aaa5c2; }
-    label {
-      display: block;
-      margin: 16px 0 7px;
-    }
-    input {
-      width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: 1px solid #403957;
-      background: #0d0c14;
-      color: white;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 16px;
-      border: 0;
-      border-radius: 10px;
-      background: #8250ff;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover { background: #6936ed; }
-    .secondary {
-      background: #292638;
-    }
-    .message {
-      min-height: 22px;
-      margin-top: 14px;
-      text-align: center;
-      color: #ff8080;
-    }
-    .hidden { display: none; }
-    .role {
-      text-align: center;
-      color: #c2aaff;
-      padding: 10px;
-      border-radius: 10px;
-      background: #8250ff18;
-    }
-    .note {
-      font-size: 12px;
-      color: #aaa5b8;
-      line-height: 1.5;
-      margin-top: 20px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PACZKA HUB — Admin</title>
+<style>
+:root {
+  --bg:#090b12; --panel:#121522; --panel2:#191d2c;
+  --border:#292e43; --text:#f4f5ff; --muted:#929ab4;
+  --purple:#8957ff; --blue:#408cff; --green:#3dd6a0;
+  --red:#ff647f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn{border:0;border-radius:10px;padding:11px 15px;background:linear-gradient(120deg,var(--purple),var(--blue));color:white;font-weight:bold}
+.btn:hover{filter:brightness(1.12)}
+.btn.secondary{background:#262b40;border:1px solid #383e57}
+.btn.danger{background:#512435}
+input,textarea,select{width:100%;padding:12px;color:var(--text);background:#0b0e17;border:1px solid var(--border);border-radius:10px}
+label{display:block;margin:15px 0 7px;font-size:13px;color:#c5cbe0}
+textarea{min-height:100px;resize:vertical}
+.muted{color:var(--muted)}
+.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top,#4b2c8750,transparent 60%),var(--bg)}
+.login-card{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:30px;box-shadow:0 25px 80px #0007}
+.brand{display:flex;align-items:center;gap:12px;font-size:21px;font-weight:900}
+.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--blue))}
+.login-card h1{margin-top:28px}
+.login-error{color:var(--red);font-size:13px;margin-top:13px;min-height:18px}
+.small-note{font-size:11px;line-height:1.6;margin-top:20px;color:var(--muted)}
+.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:#0d101a;border-right:1px solid var(--border);padding:22px 15px;display:flex;flex-direction:column;z-index:5}
+.brand-sub{margin:9px 0 25px 55px;color:var(--muted);font-size:10px;letter-spacing:1px}
+.menu-label{font-size:10px;letter-spacing:1.5px;color:#777f99;padding:10px}
+.nav{width:100%;display:block;text-align:left;color:#aeb6ce;background:transparent;border:1px solid transparent;border-radius:10px;padding:12px;margin:3px 0}
+.nav:hover,.nav.active{background:#211a38;color:white;border-color:#3a2c60}
+.nav.active{box-shadow:inset 3px 0 var(--purple)}
+.sidebar-bottom{margin-top:auto}
+.session{padding:13px;background:var(--panel);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;font-size:12px}
+.online-dot{display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin-right:7px}
+.main{margin-left:245px;min-width:0}
+.topbar{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 28px;border-bottom:1px solid var(--border);background:#0d101bea}
+.top-title{font-weight:bold}
+.top-right{display:flex;align-items:center;gap:10px}
+.badge{display:inline-block;border:1px solid #3b305e;background:#211a38;color:#c6b5ff;border-radius:8px;padding:7px 10px;font-size:10px;font-weight:bold}
+.content{padding:28px;max-width:1500px;margin:auto}
+.page{display:none}
+.page.active{display:block}
+.eyebrow{font-size:10px;letter-spacing:1.7px;font-weight:bold;color:#ac96ff}
+h1{font-size:27px;margin:9px 0}
+h2{font-size:17px;margin:0 0 15px}
+h3{font-size:14px;margin:0 0 8px}
+.desc{font-size:13px;line-height:1.7;color:var(--muted)}
+.hero{padding:27px;border:1px solid #3b2b65;border-radius:20px;background:radial-gradient(ellipse at right top,#6946b52c,transparent 55%),linear-gradient(120deg,#171529,#111827);position:relative;overflow:hidden}
+.hero-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.hero p{max-width:590px;color:#adb5ce;font-size:13px;line-height:1.8}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0}
+.stat,.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:18px;min-width:0}
+.stat-label{color:var(--muted);font-size:12px}
+.stat-value{font-size:28px;font-weight:900;margin:18px 0 7px;overflow-wrap:anywhere}
+.stat-foot{color:var(--muted);font-size:11px}
+.columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:17px}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.item{padding:14px 0;border-bottom:1px solid #252a3d}
+.item:last-child{border-bottom:0}
+.item p{font-size:12px;line-height:1.7;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
+.item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.item-actions .btn{font-size:11px;padding:8px 10px}
+.tag{display:inline-block;font-size:10px;background:#222a40;color:#a9c9ff;padding:5px 8px;border-radius:7px;margin:2px 0}
+.empty{font-size:13px;color:var(--muted);padding:15px 0}
+.activity{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #252a3d}
+.activity:last-child{border-bottom:0}
+.activity-icon{width:35px;height:35px;flex-shrink:0;display:grid;place-items:center;background:#27203f;border-radius:10px}
+.activity p{font-size:12px;line-height:1.6;color:var(--muted);margin:5px 0}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.footer{margin-top:24px;color:#747d98;font-size:11px;line-height:1.7}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}}
+@media(max-width:700px){
+.sidebar{position:relative;width:100%;height:auto;padding:12px;border:0;border-bottom:1px solid var(--border)}
+.brand-sub,.menu-label,.sidebar-bottom{display:none}
+.brand{padding:0 4px 12px}
+.navs{display:flex;gap:5px;overflow-x:auto}
+.nav{width:auto;white-space:nowrap;padding:10px;font-size:12px}
+.nav.active{box-shadow:inset 0 -2px var(--purple)}
+.main{margin-left:0}
+.topbar{padding:14px 16px}
+.top-right .badge{display:none}
+.content{padding:16px}
+.hero{padding:20px}
+h1{font-size:23px}
+.stat{padding:13px}
+.stat-value{font-size:23px}
+}
+</style>
 </head>
 <body>
-  <main class="panel">
-    <section id="loginPanel">
-      <h1>📦 PACZKA HUB</h1>
-      <p class="subtitle">Zaloguj się do panelu</p>
-      <form id="loginForm">
-        <label for="username">Login</label>
-        <input id="username" autocomplete="username"
-               placeholder="Wpisz login" required>
-        <label for="password">Hasło</label>
-        <input id="password" type="password"
-               autocomplete="current-password"
-               placeholder="Wpisz hasło" required>
-        <button type="submit">Zaloguj się</button>
-      </form>
-      <div id="message" class="message" role="status"></div>
-      <p class="note">
-        To jest demonstracyjne logowanie w HTML. Nie używaj go
-        do ochrony prywatnych danych — hasła zapisane w kodzie
-        strony można odczytać.
-      </p>
-    </section>
-    <section id="dashboard" class="hidden">
-      <h1>📦 PACZKA HUB</h1>
-      <p class="role" id="roleLabel"></p>
-      <div id="ownerTools" class="hidden">
-        <h2>Panel właściciela</h2>
-        <p>Masz dostęp do ustawień właściciela.</p>
-        <label for="betaDate">Data testów beta</label>
-        <input id="betaDate" type="datetime-local">
-        <button id="saveDate">Zapisz datę</button>
-        <p id="dateMessage" class="subtitle"></p>
-      </div>
-      <div id="technicianTools" class="hidden">
-        <h2>Panel technika</h2>
-        <p>Jesteś zalogowany jako technik.</p>
-        <p>Możesz korzystać z panelu technika.</p>
-      </div>
-      <button class="secondary" id="logoutButton">
-        Wyloguj się
-      </button>
-    </section>
+
+<!-- LOGOWANIE: dane pozostawione bez zmian -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="brand"><div class="logo">📦</div><div>PACZKA HUB</div></div>
+    <h1>Panel administracyjny</h1>
+    <p class="muted">Zaloguj się do centrum zarządzania.</p>
+    <form id="loginForm">
+      <label for="username">Login</label>
+      <input id="username" autocomplete="username" required placeholder="Wpisz login">
+      <label for="password">Hasło</label>
+      <input id="password" type="password" autocomplete="current-password" required placeholder="Wpisz hasło">
+      <button class="btn" style="width:100%;margin-top:20px" type="submit">Zaloguj się →</button>
+    </form>
+    <div id="loginError" class="login-error" role="status"></div>
+    <div class="small-note">To demonstracyjne logowanie. Hasła zapisane w kodzie HTML nie chronią prawdziwych danych.</div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">📦</div><div>PACZKA HUB</div></div>
+    <div class="brand-sub">ADMINISTRATION CENTER</div>
+    <div class="menu-label">MENU GŁÓWNE</div>
+    <nav class="navs">
+      <button class="nav active" data-page="overview">◈　Przegląd</button>
+      <button class="nav" data-page="updates">▤　Aktualizacje</button>
+      <button class="nav" data-page="projects">◫　Projekty i zadania</button>
+      <button class="nav" data-page="settings">⚙　Ustawienia</button>
+      <button class="nav" data-page="activity">◷　Historia działań</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="session"><span class="online-dot"></span><strong id="sessionName">Sesja aktywna</strong><div class="muted" style="margin-top:7px">Administrator</div></div>
+      <button class="nav" id="logout">⇥　Wyloguj się</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><div class="top-title" id="topTitle">Przegląd</div><div id="clock" class="muted" style="font-size:11px;margin-top:5px"></div></div>
+      <div class="top-right"><span class="badge">● PEŁNE UPRAWNIENIA</span><button class="btn secondary" id="topLogout">Wyloguj</button></div>
+    </header>
+
+    <div class="content">
+      <section id="page-overview" class="page active">
+        <div class="hero">
+          <div class="hero-row"><div>
+            <div class="eyebrow">CENTRUM ZARZĄDZANIA</div>
+            <h1>Witaj w PACZKA HUB 👋</h1>
+            <p>Zarządzaj aktualizacjami, projektami, ustawieniami i historią zmian w jednym miejscu. Właściciel i technik mają tutaj takie same narzędzia.</p>
+            <button class="btn" data-goto="updates">＋ Dodaj aktualizację</button>
+          </div><span class="badge">BETA 0.1.0</span></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Aktualizacje</div><div class="stat-value" id="statUpdates">0</div><div class="stat-foot">Wpisy w dzienniku zmian</div></div>
+          <div class="stat"><div class="stat-label">Projekty i zadania</div><div class="stat-value" id="statProjects">0</div><div class="stat-foot">Wszystkie pozycje</div></div>
+          <div class="stat"><div class="stat-label">Ukończone zadania</div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Zakończone projekty</div></div>
+          <div class="stat"><div class="stat-label">Status strony</div><div class="stat-value" style="font-size:21px" id="statStatus">BETA</div><div class="stat-foot">Aktualny status projektu</div></div>
+        </div>
+        <div class="columns">
+          <div class="card"><div class="card-head"><h2>Ostatnie aktualizacje</h2><button class="btn secondary" data-goto="updates">Zobacz</button></div><div id="recentUpdates"></div></div>
+          <div class="card"><h2>Centrum informacji</h2>
+            <div class="activity"><div class="activity-icon">🔐</div><div><strong>Jednakowe uprawnienia</strong><p>Oba konta mogą korzystać z każdej sekcji panelu.</p></div></div>
+            <div class="activity"><div class="activity-icon">💾</div><div><strong>Zapis w przeglądarce</strong><p>Zmiany są zapisywane lokalnie na tym urządzeniu.</p></div></div>
+            <div class="activity"><div class="activity-icon">🕒</div><div><strong>Polski czas</strong><p id="dashboardDate">Ładowanie daty…</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-updates" class="page">
+        <div class="eyebrow">DZIENNIK ZMIAN</div><h1>Aktualizacje</h1><p class="desc">Twórz, edytuj i usuwaj wpisy dotyczące nowych funkcji i poprawek.</p>
+        <div class="columns">
+          <div class="card"><h2>Nowa aktualizacja</h2>
+            <form id="updateForm">
+              <label for="updateTitle">Tytuł</label><input id="updateTitle" maxlength="100" required placeholder="Np. BETA 0.1.1">
+              <label for="updateCategory">Kategoria</label><select id="updateCategory"><option>Nowość</option><option>Poprawka</option><option>Zmiana</option><option>Informacja</option></select>
+              <label for="updateText">Opis zmian</label><textarea id="updateText" maxlength="3000" required placeholder="Co zostało zmienione?"></textarea>
+              <button class="btn" style="width:100%;margin-top:18px" type="submit">＋ Opublikuj wpis</button>
+            </form>
+          </div>
+          <div class="card"><div class="card-head"><h2>Historia aktualizacji</h2><span class="tag" id="updateCount">0 wpisów</span></div><div id="updatesList"></div></div>
+        </div>
+      </section>
+
+      <section id="page-projects" class="page">
+        <div class="eyebrow">PLANOWANIE PRACY</div><h1>Projekty i zadania</h1><p class="desc">Twórz zadania, aktualizuj ich status, edytuj opisy i usuwaj ukończone pozycje.</p>
+        <div class="columns">
+          <div class="card"><h2>Dodaj zadanie</h2>
+            <form id="projectForm">
+              <label for="projectTitle">Nazwa</label><input id="projectTitle" maxlength="100" required placeholder="Nazwa projektu lub zadania">
+              <label for="projectDescription">Opis</label><textarea id="projectDescription" maxlength="1000" placeholder="Szczegóły zadania"></textarea>
+              <label for="projectStatus">Status</label><select id="projectStatus"><option>Do zrobienia</option><option>W trakcie</option><option>Ukończone</option></select>
+              <button class="btn" style="width:100%;margin-top:18px" type="submit">＋ Dodaj zadanie</button>
+            </form>
+          </div>
+          <div class="card"><div class="card-head"><h2>Lista zadań</h2><span class="tag" id="projectCount">0 pozycji</span></div><div id="projectsList"></div></div>
+        </div>
+      </section>
+
+      <section id="page-settings" class="page">
+        <div class="eyebrow">KONFIGURACJA</div><h1>Ustawienia</h1><p class="desc">Zarządzaj wersją, statusem i datą planowanych testów beta.</p>
+        <div class="columns">
+          <div class="card"><h2>Ustawienia projektu</h2>
+            <form id="settingsForm">
+              <label for="siteVersion">Wersja</label><input id="siteVersion" maxlength="30" required>
+              <label for="siteStatus">Status</label><select id="siteStatus"><option>BETA</option><option>W trakcie prac</option><option>Przerwa techniczna</option><option>Opublikowany</option></select>
+              <label for="betaDate">Data testów beta</label><input id="betaDate" type="datetime-local">
+              <button class="btn" style="width:100%;margin-top:18px" type="submit">Zapisz ustawienia</button>
+            </form>
+            <p class="muted" style="font-size:11px;line-height:1.6">Zmiany dotyczą tej przeglądarki. Nie aktualizują automatycznie innych urządzeń ani plików GitHub.</p>
+          </div>
+          <div class="card"><h2>Informacje o sesji</h2>
+            <div class="activity"><div class="activity-icon">👤</div><div><strong id="accountName">Administrator</strong><p>Aktualnie zalogowane konto</p></div></div>
+            <div class="activity"><div class="activity-icon">🛡️</div><div><strong>Pełne uprawnienia</strong><p>Oba konta mają dostęp do wszystkich funkcji panelu.</p></div></div>
+            <button class="btn danger" id="clearData" style="margin-top:18px">Usuń wszystkie lokalne dane</button>
+            <p class="muted" style="font-size:11px;line-height:1.6">Operacja usuwa lokalne wpisy, zadania i ustawienia. Nie można jej cofnąć.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-activity" class="page">
+        <div class="eyebrow">REJESTR</div><h1>Historia działań</h1><p class="desc">Historia działań wykonanych podczas pracy w panelu na tym urządzeniu.</p>
+        <div class="card"><div class="card-head"><h2>Ostatnie działania</h2><button class="btn secondary" id="clearActivity">Wyczyść historię</button></div><div id="activityList"></div></div>
+      </section>
+
+      <div class="footer">PACZKA HUB • Panel administracyjny • Dane demonstracyjne zapisane lokalnie.</div>
+    </div>
   </main>
-  <script>
-    "use strict";
-    // Dane logowania — demonstracja, nie bezpieczne uwierzytelnianie.
-    const ACCOUNTS = {
-      wlasciciel: {
-        password: "wlasciciel",
-        role: "owner"
-      },
-      technik: {
-        password: "technik1",
-        role: "technician"
-      }
-    };
-    const loginForm = document.getElementById("loginForm");
-    const loginPanel = document.getElementById("loginPanel");
-    const dashboard = document.getElementById("dashboard");
-    const message = document.getElementById("message");
-    const ownerTools = document.getElementById("ownerTools");
-    const technicianTools = document.getElementById("technicianTools");
-    const roleLabel = document.getElementById("roleLabel");
-    loginForm.addEventListener("submit", function(event) {
-      event.preventDefault();
-      const username = document.getElementById("username").value
-        .trim().toLowerCase();
-      const password = document.getElementById("password").value;
-      const account = ACCOUNTS[username];
-      if (!account || account.password !== password) {
-        message.textContent = "❌ Nieprawidłowy login lub hasło.";
-        return;
-      }
-      message.textContent = "";
-      loginPanel.classList.add("hidden");
-      dashboard.classList.remove("hidden");
-      ownerTools.classList.add("hidden");
-      technicianTools.classList.add("hidden");
-      if (account.role === "owner") {
-        roleLabel.textContent = "Zalogowano jako WŁAŚCICIEL";
-        ownerTools.classList.remove("hidden");
-      } else {
-        roleLabel.textContent = "Zalogowano jako TECHNIK";
-        technicianTools.classList.remove("hidden");
+</div>
+
+<script>
+"use strict";
+
+/* LOGOWANIE POZOSTAWIONE BEZ ZMIAN */
+const ACCOUNTS = {
+  wlasciciel: { password: "wlasciciel", name: "Właściciel" },
+  technik: { password: "technik1", name: "Technik" }
+};
+
+const $ = id => document.getElementById(id);
+const KEY = "paczkaHubAdminDataV2";
+const defaults = () => ({
+  version:"BETA 0.1.0",
+  status:"BETA",
+  betaDate:"2026-10-20T18:00",
+  updates:[],
+  projects:[],
+  activity:[]
+});
+
+let data = loadData();
+let currentAccount = null;
+
+function loadData() {
+  try {
+    const value = localStorage.getItem(KEY);
+    if (value) {
+      const parsed = JSON.parse(value);
+      const base = defaults();
+      return {
+        ...base, ...parsed,
+        updates:Array.isArray(parsed.updates) ? parsed.updates : [],
+        projects:Array.isArray(parsed.projects) ? parsed.projects : [],
+        activity:Array.isArray(parsed.activity) ? parsed.activity : []
+      };
+    }
+  } catch (e) {}
+  return defaults();
+}
+
+function saveData() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(data));
+    return true;
+  } catch (e) {
+    alert("Nie udało się zapisać danych w tej przeglądarce.");
+    return false;
+  }
+}
+
+function id() {
+  return window.crypto && crypto.randomUUID
+    ? crypto.randomUUID()
+    : String(Date.now()) + Math.random().toString(16).slice(2);
+}
+
+function element(tag, cls, text) {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function logAction(text) {
+  data.activity.unshift({
+    id:id(),
+    text,
+    actor:currentAccount ? currentAccount.name : "System",
+    date:new Date().toISOString()
+  });
+  data.activity = data.activity.slice(0,100);
+  saveData();
+  renderActivity();
+}
+
+function dateText(value) {
+  if (!value) return "Brak daty";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "Brak daty" :
+    date.toLocaleString("pl-PL", {timeZone:"Europe/Warsaw"});
+}
+
+$("loginForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const username = $("username").value.trim().toLowerCase();
+  const password = $("password").value;
+  const account = ACCOUNTS[username];
+
+  if (!account || account.password !== password) {
+    $("loginError").textContent = "Nieprawidłowy login lub hasło.";
+    return;
+  }
+
+  currentAccount = {username, name:account.name};
+  $("loginError").textContent = "";
+  $("sessionName").textContent = account.name;
+  $("accountName").textContent = account.name + " (" + username + ")";
+  $("loginScreen").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  logAction("Zalogowano do panelu.");
+  renderAll();
+  showPage("overview");
+});
+
+function logout() {
+  if (currentAccount) logAction("Wylogowano z panelu.");
+  currentAccount = null;
+  $("app").classList.add("hidden");
+  $("loginScreen").classList.remove("hidden");
+  $("loginForm").reset();
+  $("loginError").textContent = "";
+}
+$("logout").addEventListener("click", logout);
+$("topLogout").addEventListener("click", logout);
+
+const titles = {
+  overview:"Przegląd",
+  updates:"Aktualizacje",
+  projects:"Projekty i zadania",
+  settings:"Ustawienia",
+  activity:"Historia działań"
+};
+
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.toggle("active", p.id === "page-" + name)
+  );
+  document.querySelectorAll("[data-page]").forEach(b =>
+    b.classList.toggle("active", b.dataset.page === name)
+  );
+  $("topTitle").textContent = titles[name] || "Panel";
+}
+
+document.querySelectorAll("[data-page]").forEach(button =>
+  button.addEventListener("click", () => showPage(button.dataset.page))
+);
+document.querySelectorAll("[data-goto]").forEach(button =>
+  button.addEventListener("click", () => showPage(button.dataset.goto))
+);
+
+function renderAll() {
+  renderUpdates();
+  renderProjects();
+  renderSettings();
+  renderActivity();
+  renderStats();
+}
+
+function renderStats() {
+  $("statUpdates").textContent = data.updates.length;
+  $("statProjects").textContent = data.projects.length;
+  $("statDone").textContent = data.projects.filter(p => p.status === "Ukończone").length;
+  $("statStatus").textContent = data.status;
+}
+
+function renderUpdates() {
+  $("updatesList").replaceChildren();
+  $("recentUpdates").replaceChildren();
+  $("updateCount").textContent = data.updates.length + " wpisów";
+
+  if (!data.updates.length) {
+    $("updatesList").append(element("div","empty","Brak aktualizacji."));
+    $("recentUpdates").append(element("div","empty","Dodaj pierwszy wpis w sekcji Aktualizacje."));
+    return;
+  }
+
+  data.updates.forEach((u,index) => {
+    const item = element("div","item");
+    item.append(element("h3","",u.title));
+    item.append(element("span","tag",u.category));
+    item.append(element("div","muted",dateText(u.createdAt)));
+    item.append(element("p","",u.text));
+
+    const actions = element("div","item-actions");
+    const edit = element("button","btn secondary","Edytuj");
+    edit.type = "button";
+    edit.addEventListener("click",() => editUpdate(u.id));
+    const remove = element("button","btn danger","Usuń");
+    remove.type = "button";
+    remove.addEventListener("click",() => deleteUpdate(u.id));
+    actions.append(edit,remove);
+    item.append(actions);
+    $("updatesList").append(item);
+
+    if (index < 3) {
+      const recent = element("div","activity");
+      recent.append(element("div","activity-icon","▤"));
+      const details = element("div");
+      details.append(element("strong","",u.title));
+      details.append(element("p","",u.category + " • " + dateText(u.createdAt)));
+      recent.append(details);
+      $("recentUpdates").append(recent);
+    }
+  });
+}
+
+$("updateForm").addEventListener("submit",event => {
+  event.preventDefault();
+  const title = $("updateTitle").value.trim();
+  const text = $("updateText").value.trim();
+  if (!title || !text) return;
+
+  data.updates.unshift({
+    id:id(), title, text,
+    category:$("updateCategory").value,
+    createdAt:new Date().toISOString()
+  });
+
+  if (saveData()) {
+    logAction("Dodano aktualizację: " + title);
+    $("updateForm").reset();
+    renderAll();
+  }
+});
+
+function editUpdate(updateId) {
+  const u = data.updates.find(item => item.id === updateId);
+  if (!u) return;
+  const title = prompt("Nowy tytuł:",u.title);
+  if (title === null) return;
+  const text = prompt("Nowy opis:",u.text);
+  if (text === null) return;
+  if (!title.trim() || !text.trim()) return alert("Tytuł i opis nie mogą być puste.");
+  u.title = title.trim();
+  u.text = text.trim();
+  if (saveData()) {
+    logAction("Edytowano aktualizację: " + u.title);
+    renderAll();
+  }
+}
+
+function deleteUpdate(updateId) {
+  const u = data.updates.find(item => item.id === updateId);
+  if (!u || !confirm("Usunąć tę aktualizację?")) return;
+  data.updates = data.updates.filter(item => item.id !== updateId);
+  if (saveData()) {
+    logAction("Usunięto aktualizację: " + u.title);
+    renderAll();
+  }
+}
+
+$("projectForm").addEventListener("submit",event => {
+  event.preventDefault();
+  const title = $("projectTitle").value.trim();
+  if (!title) return;
+
+  data.projects.unshift({
+    id:id(),
+    title,
+    description:$("projectDescription").value.trim(),
+    status:$("projectStatus").value,
+    createdAt:new Date().toISOString()
+  });
+
+  if (saveData()) {
+    logAction("Dodano zadanie: " + title);
+    $("projectForm").reset();
+    renderAll();
+  }
+});
+
+function renderProjects() {
+  $("projectsList").replaceChildren();
+  $("projectCount").textContent = data.projects.length + " pozycji";
+
+  if (!data.projects.length) {
+    $("projectsList").append(element("div","empty","Brak projektów i zadań."));
+    return;
+  }
+
+  data.projects.forEach(project => {
+    const item = element("div","item");
+    item.append(element("h3","",project.title));
+    item.append(element("p","",project.description || "Brak opisu."));
+
+    const status = document.createElement("select");
+    ["Do zrobienia","W trakcie","Ukończone"].forEach(value => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      option.selected = value === project.status;
+      status.append(option);
+    });
+    status.addEventListener("change",() => {
+      project.status = status.value;
+      if (saveData()) {
+        logAction("Zmieniono status zadania: " + project.title + " → " + status.value);
+        renderAll();
       }
     });
-    document.getElementById("saveDate").addEventListener("click", function() {
-      const value = document.getElementById("betaDate").value;
-      const dateMessage = document.getElementById("dateMessage");
-      if (!value) {
-        dateMessage.textContent = "Najpierw wybierz datę.";
-        return;
-      }
-      dateMessage.textContent =
-        "Data ustawiona w tym panelu: " +
-        new Date(value).toLocaleString("pl-PL");
-      // To demo nie zapisuje daty na serwerze ani dla innych odwiedzających.
-    });
-    document.getElementById("logoutButton").addEventListener("click", function() {
-      dashboard.classList.add("hidden");
-      loginPanel.classList.remove("hidden");
-      loginForm.reset();
-      message.textContent = "";
-      document.getElementById("dateMessage").textContent = "";
-    });
-  </script>
+
+    const actions = element("div","item-actions");
+    const edit = element("button","btn secondary","Edytuj");
+    edit.type = "button";
+    edit.addEventListener("click",() => editProject(project.id));
+    const remove = element("button","btn danger","Usuń");
+    remove.type = "button";
+    remove.addEventListener("click",() => deleteProject(project.id));
+    actions.append(edit,remove);
+
+    item.append(element("label","","Status"),status,actions);
+    $("projectsList").append(item);
+  });
+}
+
+function editProject(projectId) {
+  const p = data.projects.find(item => item.id === projectId);
+  if (!p) return;
+  const title = prompt("Nazwa zadania:",p.title);
+  if (title === null) return;
+  const description = prompt("Opis:",p.description);
+  if (description === null) return;
+  if (!title.trim()) return alert("Nazwa nie może być pusta.");
+  p.title = title.trim();
+  p.description = description.trim();
+  if (saveData()) {
+    logAction("Edytowano zadanie: " + p.title);
+    renderAll();
+  }
+}
+
+function deleteProject(projectId) {
+  const p = data.projects.find(item => item.id === projectId);
+  if (!p || !confirm("Usunąć to zadanie?")) return;
+  data.projects = data.projects.filter(item => item.id !== projectId);
+  if (saveData()) {
+    logAction("Usunięto zadanie: " + p.title);
+    renderAll();
+  }
+}
+
+function renderSettings() {
+  $("siteVersion").value = data.version;
+  $("siteStatus").value = data.status;
+  $("betaDate").value = data.betaDate || "";
+  $("dashboardDate").textContent = dateText(new Date().toISOString());
+}
+
+$("settingsForm").addEventListener("submit",event => {
+  event.preventDefault();
+  data.version = $("siteVersion").value.trim() || "BETA 0.1.0";
+  data.status = $("siteStatus").value;
+  data.betaDate = $("betaDate").value;
+  if (saveData()) {
+    logAction("Zapisano ustawienia projektu.");
+    renderAll();
+    alert("Ustawienia zapisane w tej przeglądarce.");
+  }
+});
+
+function renderActivity() {
+  $("activityList").replaceChildren();
+  if (!data.activity.length) {
+    $("activityList").append(element("div","empty","Nie ma jeszcze zarejestrowanych działań."));
+    return;
+  }
+  data.activity.forEach(entry => {
+    const row = element("div","activity");
+    row.append(element("div","activity-icon","◷"));
+    const details = element("div");
+    details.append(element("strong","",entry.text));
+    details.append(element("p","",entry.actor + " • " + dateText(entry.date)));
+    row.append(details);
+    $("activityList").append(row);
+  });
+}
+
+$("clearActivity").addEventListener("click",() => {
+  if (!confirm("Wyczyścić historię działań?")) return;
+  data.activity = [];
+  saveData();
+  renderActivity();
+});
+
+$("clearData").addEventListener("click",() => {
+  if (!confirm("Usunąć wszystkie aktualizacje, projekty i ustawienia zapisane lokalnie?")) return;
+  data = defaults();
+  if (saveData()) {
+    logAction("Wyczyszczono lokalne dane panelu.");
+    renderAll();
+    alert("Lokalne dane zostały usunięte.");
+  }
+});
+
+function updateClock() {
+  $("clock").textContent = new Date().toLocaleString("pl-PL",{
+    timeZone:"Europe/Warsaw",
+    dateStyle:"medium",
+    timeStyle:"medium"
+  });
+}
+updateClock();
+setInterval(updateClock,1000);
+</script>
 </body>
 </html>
