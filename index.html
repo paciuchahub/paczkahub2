@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+1a<!DOCTYPE html>
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
@@ -263,6 +263,545 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
       <input id="password" type="password" autocomplete="current-password" required>
       <p id="loginError" style="color:#ff8b9c;display:none">Nieprawidłowy login lub hasło.</p>
       <button class="btn" style="width:100%" type="submit">Zaloguj do panelu</button>
+      <!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PACZKA HUB — Aktualizacja</title>
+<style>
+:root {
+  --bg:#090a10;
+  --panel:#11131e;
+  --panel2:#171a29;
+  --purple:#8b5cf6;
+  --blue:#4f8cff;
+  --text:#f4f4fb;
+  --muted:#a3a6bd;
+  --border:#292c40;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:radial-gradient(ellipse at top,#17152d,var(--bg) 60%);
+  color:var(--text);font-family:Arial,Helvetica,sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{
+  position:sticky;top:0;z-index:5;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:12px 5%;
+  background:#0c0d15ed;border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.brand{font-weight:900;letter-spacing:1px}
+.brand span{color:var(--purple)}
+.online{font-size:12px;color:var(--muted);text-align:right}
+.online b{color:#c4b5fd}
+.container{width:min(1000px,92%);margin:32px auto 70px}
+.hero,.card{
+  background:linear-gradient(145deg,#151727,#10111a);
+  border:1px solid var(--border);border-radius:20px;padding:25px;
+  margin-bottom:18px;box-shadow:0 12px 35px #0002;
+}
+.hero{text-align:center;padding:42px 24px}
+.tag{
+  display:inline-block;padding:7px 12px;border:1px solid #554080;
+  background:#211936;border-radius:30px;color:#c4b5fd;
+  font-size:12px;font-weight:bold;
+}
+h1{font-size:clamp(30px,7vw,54px);margin:17px 0 10px}
+h1 span{color:#a78bfa}
+h2{margin-top:0;font-size:21px}
+p{line-height:1.65;color:#c3c5d5}
+.muted{color:var(--muted);font-size:13px}
+.countdown{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:10px;margin:25px auto;max-width:550px
+}
+.timebox{
+  background:#0c0d16;border:1px solid var(--border);
+  padding:17px 5px;border-radius:13px
+}
+.timebox strong{display:block;font-size:26px;color:#c4b5fd}
+.timebox span{font-size:11px;color:var(--muted)}
+.btn{
+  border:0;border-radius:10px;padding:12px 16px;font-weight:bold;
+  color:white;background:linear-gradient(100deg,var(--purple),var(--blue));
+}
+.btn.secondary{background:#202236;border:1px solid #34364c}
+.btn.danger{background:#762f48}
+.btn.small{padding:9px 12px;font-size:12px}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.stat{
+  padding:17px;border-radius:14px;background:#0d0f18;
+  border:1px solid var(--border)
+}
+.stat strong{display:block;font-size:20px;margin-bottom:5px}
+input,select,textarea{
+  width:100%;background:#0b0d15;color:white;
+  border:1px solid #35374d;border-radius:10px;
+  padding:12px;margin:6px 0 14px;outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+label{display:block;font-size:13px;color:#c9cadd}
+textarea{min-height:90px;resize:vertical}
+.notice{
+  padding:14px;border-radius:12px;background:#17132a;
+  border:1px solid #49356f;color:#d8ccff;white-space:pre-wrap
+}
+.listitem{
+  padding:13px 0;border-bottom:1px solid var(--border);
+  overflow-wrap:anywhere
+}
+.listitem:last-child{border-bottom:0}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+.modal{
+  position:fixed;inset:0;z-index:20;display:none;
+  align-items:center;justify-content:center;padding:16px;
+  background:#000b;overflow-y:auto
+}
+.modal.show{display:flex}
+.dialog{
+  width:min(500px,100%);max-height:92vh;overflow-y:auto;
+  background:#121421;border:1px solid #38314f;
+  border-radius:20px;padding:24px;
+  box-shadow:0 20px 80px #0009
+}
+.dialoghead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.close{border:0;background:#252638;color:white;border-radius:8px;padding:8px 12px}
+.adminhead{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px
+}
+.adminlabel{font-size:12px;color:#c4b5fd}
+hr{border:0;border-top:1px solid var(--border);margin:20px 0}
+.hidden{display:none!important}
+#toast{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:#24263a;border:1px solid #474b67;padding:12px 18px;
+  border-radius:10px;display:none;z-index:40;max-width:90%;text-align:center
+}
+@media(max-width:650px){
+  .grid{grid-template-columns:1fr}
+  .hero{padding:30px 17px}
+  .card{padding:19px}
+  .topbar{padding:12px 4%}
+  .countdown{gap:6px}
+  .timebox strong{font-size:21px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">PACZKA <span>HUB</span></div>
+  <div>
+    <div class="online">Właściciele online: <b id="ownersOnline">0</b></div>
+    <div class="online">Technicy online: <b id="techsOnline">0</b></div>
+  </div>
+  <button class="btn small" id="loginOpen">Zaloguj</button>
+</header>
+<main class="container">
+  <section class="hero">
+    <span class="tag">BETA 0.1.0</span>
+    <h1>Witaj w <span>PACZKA HUB</span></h1>
+    <p>Wszystkie najważniejsze informacje o projekcie, testach i aktualizacjach w jednym miejscu.</p>
+    <div class="countdown">
+      <div class="timebox"><strong id="days">--</strong><span>DNI</span></div>
+      <div class="timebox"><strong id="hours">--</strong><span>GODZIN</span></div>
+      <div class="timebox"><strong id="minutes">--</strong><span>MINUT</span></div>
+      <div class="timebox"><strong id="seconds">--</strong><span>SEKUND</span></div>
+    </div>
+    <p id="gameDate" class="muted">Termin testów: 20.10.2026, godz. 18:00</p>
+    <div class="actions">
+      <button class="btn" onclick="document.getElementById('announcementSection').scrollIntoView({behavior:'smooth'})">Aktualności</button>
+      <button class="btn secondary" onclick="document.getElementById('aboutSection').scrollIntoView({behavior:'smooth'})">O projekcie</button>
+    </div>
+  </section>
+  <section class="card">
+    <h2>📢 Komunikat projektu</h2>
+    <div id="announcementSection" class="notice">Witaj w PACZKA HUB! Więcej informacji wkrótce.</div>
+    <p class="muted" id="statusText">Status projektu: Przygotowania do bety</p>
+  </section>
+  <section class="grid">
+    <div class="card">
+      <h2>🛠️ Informacje o projekcie</h2>
+      <div class="stat"><strong id="versionDisplay">BETA 0.1.0</strong><span class="muted">Aktualna wersja</span></div>
+      <p id="projectDescription">PACZKA HUB — projekt w trakcie przygotowań do testów.</p>
+    </div>
+    <div class="card">
+      <h2>🕒 Aktualny czas</h2>
+      <div class="stat"><strong id="clock">--:--:--</strong><span class="muted" id="today">Ładowanie daty...</span></div>
+      <p class="muted">Czas wyświetlany według strefy Europe/Warsaw.</p>
+    </div>
+  </section>
+  <section class="card" id="aboutSection">
+    <h2>👋 O projekcie</h2>
+    <p>PACZKA HUB to miejsce z informacjami o projekcie, postępach i planowanych testach.</p>
+    <p>Znajdziesz tutaj aktualności, wersję projektu i termin bety.</p>
+  </section>
+  <section class="card">
+    <h2>📋 Historia aktualizacji</h2>
+    <div id="changelog">
+      <div class="listitem"><b>Wersja BETA 0.1.0</b><br><span class="muted">Przygotowanie strony projektu.</span></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>📬 Kontakt</h2>
+    <p>Masz pytanie dotyczące projektu?</p>
+    <p><a style="color:#b9a1ff" href="mailto:kontaktpaczkahub@gmail.com">kontaktpaczkahub@gmail.com</a></p>
+    <p><a style="color:#b9a1ff" href="https://www.roblox.com/users/5868743919/profile" target="_blank" rel="noopener noreferrer">Profil Roblox</a></p>
+  </section>
+  <section class="card hidden" id="adminPanel">
+    <div class="adminhead">
+      <div>
+        <span class="adminlabel">PANEL ADMINISTRACYJNY</span>
+        <h2 style="margin:7px 0" id="panelTitle">Panel</h2>
+      </div>
+      <button class="btn secondary small" id="logoutBtn">Wyloguj</button>
+    </div>
+    <p class="muted">Wspólny zestaw narzędzi dla właściciela i technika.</p>
+    <hr>
+    <h2>📅 Termin testów</h2>
+    <label for="dateInput">Data i godzina testów</label>
+    <input id="dateInput" type="datetime-local">
+    <button class="btn" id="saveDate">Zapisz termin</button>
+    <hr>
+    <h2>📢 Komunikat dla odwiedzających</h2>
+    <label for="announcementInput">Treść komunikatu</label>
+    <textarea id="announcementInput" placeholder="Wpisz komunikat..."></textarea>
+    <button class="btn" id="saveAnnouncement">Opublikuj komunikat</button>
+    <hr>
+    <h2>⚙️ Status projektu</h2>
+    <label for="statusInput">Wybierz status</label>
+    <select id="statusInput">
+      <option>Przygotowania do bety</option>
+      <option>Testy beta wkrótce</option>
+      <option>Testy beta trwają</option>
+      <option>Aktualizacja w trakcie</option>
+      <option>Przerwa techniczna</option>
+      <option>Projekt chwilowo wstrzymany</option>
+    </select>
+    <button class="btn" id="saveStatus">Zapisz status</button>
+    <hr>
+    <h2>🚀 Wersja projektu</h2>
+    <label for="versionInput">Numer wersji</label>
+    <input id="versionInput" placeholder="np. BETA 0.1.1">
+    <label for="descriptionInput">Opis projektu</label>
+    <textarea id="descriptionInput" placeholder="Krótki opis bieżącego etapu..."></textarea>
+    <button class="btn" id="saveVersion">Zapisz informacje</button>
+    <hr>
+    <h2>📝 Dodaj wpis do historii</h2>
+    <label for="logTitle">Tytuł wpisu</label>
+    <input id="logTitle" placeholder="np. BETA 0.1.1 — nowości">
+    <label for="logDescription">Opis zmian</label>
+    <textarea id="logDescription" placeholder="Co zostało zmienione?"></textarea>
+    <button class="btn" id="addLog">Dodaj do historii</button>
+    <hr>
+    <h2>🔄 Narzędzia</h2>
+    <div class="actions" style="justify-content:flex-start">
+      <button class="btn secondary" id="refreshBtn">Odśwież podgląd</button>
+      <button class="btn danger" id="resetBtn">Przywróć ustawienia początkowe</button>
+    </div>
+    <p class="muted">Zmiany są zapisywane w pamięci tej przeglądarki. Przy statycznym GitHub Pages nie będą automatycznie widoczne dla innych odwiedzających.</p>
+  </section>
+</main>
+<footer>© <span id="year"></span> PACZKA HUB · BETA 0.1.0</footer>
+<!-- OKNO LOGOWANIA -->
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="dialog">
+    <div class="dialoghead">
+      <h2 id="loginTitle">🔐 Logowanie</h2>
+      <button class="close" id="loginClose" aria-label="Zamknij">✕</button>
+    </div>
+    <p class="muted">Wybierz typ konta i wpisz dane.</p>
+    <form id="loginForm">
+      <label for="role">Typ konta</label>
+      <select id="role">
+        <option value="owner">Właściciel</option>
+        <option value="tech">Technik</option>
+      </select>
+      <label for="username">Login</label>
+      <input id="username" autocomplete="username" required>
+      <label for="password">Hasło</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <p id="loginError" style="color:#ff8b9c;display:none">Nieprawidłowy login lub hasło.</p>
+      <button class="btn" style="width:100%" type="submit">Zaloguj do panelu</button>
+    </form>
+  </div>
+</div>
+<div id="toast" role="status"></div>
+<script>
+"use strict";
+/*
+  DANE LOGOWANIA:
+  Właściciel: wlasciciel / wlasciciel1
+  Technik:    technik    / technik1
+  UWAGA: To jest logowanie demonstracyjne po stronie przeglądarki.
+  Nie zabezpiecza poufnych danych na publicznej stronie.
+*/
+const ACCOUNTS = {
+  owner: { username: "wlasciciel", password: "wlasciciel1", label: "Właściciel" },
+  tech:  { username: "technik", password: "technik1", label: "Technik" }
+};
+const DEFAULTS = {
+  date: "2026-10-20T18:00",
+  announcement: "Witaj w PACZKA HUB! Więcej informacji wkrótce.",
+  status: "Przygotowania do bety",
+  version: "BETA 0.1.0",
+  description: "PACZKA HUB — projekt w trakcie przygotowań do testów.",
+  logs: [
+    {
+      title: "Wersja BETA 0.1.0",
+      description: "Przygotowanie strony projektu.",
+      date: new Date().toLocaleDateString("pl-PL")
+    }
+  ]
+};
+const STORAGE_KEY = "paczkaHubSettingsV1";
+let settings = loadSettings();
+let currentRole = null;
+let toastTimer;
+function loadSettings() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return { ...structuredClone(DEFAULTS), ...JSON.parse(saved) };
+  } catch (e) {
+    console.warn("Nie udało się wczytać ustawień.", e);
+  }
+  return structuredClone(DEFAULTS);
+}
+function saveSettings() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    return true;
+  } catch (e) {
+    showToast("Nie udało się zapisać ustawień w przeglądarce.");
+    return false;
+  }
+}
+function showToast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.style.display = "none", 2800);
+}
+function renderPage() {
+  document.getElementById("gameDate").textContent =
+    "Termin testów: " + formatDate(settings.date);
+  document.getElementById("announcementSection").textContent =
+    settings.announcement || "Brak nowego komunikatu.";
+  document.getElementById("statusText").textContent =
+    "Status projektu: " + settings.status;
+  document.getElementById("versionDisplay").textContent = settings.version;
+  document.getElementById("projectDescription").textContent = settings.description;
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const list = document.getElementById("changelog");
+  list.replaceChildren();
+  [...settings.logs].reverse().forEach(item => {
+    const div = document.createElement("div");
+    div.className = "listitem";
+    const title = document.createElement("b");
+    title.textContent = item.title;
+    const date = document.createElement("div");
+    date.className = "muted";
+    date.textContent = item.date || "";
+    const desc = document.createElement("p");
+    desc.textContent = item.description;
+    div.append(title, date, desc);
+    list.appendChild(div);
+  });
+  document.getElementById("dateInput").value = settings.date;
+  document.getElementById("announcementInput").value = settings.announcement;
+  document.getElementById("statusInput").value = settings.status;
+  document.getElementById("versionInput").value = settings.version;
+  document.getElementById("descriptionInput").value = settings.description;
+}
+function formatDate(value) {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  return new Intl.DateTimeFormat("pl-PL", {
+    timeZone: "Europe/Warsaw",
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit"
+  }).format(d);
+}
+function updateClock() {
+  const now = new Date();
+  document.getElementById("clock").textContent =
+    new Intl.DateTimeFormat("pl-PL", {
+      timeZone: "Europe/Warsaw",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    }).format(now);
+  document.getElementById("today").textContent =
+    new Intl.DateTimeFormat("pl-PL", {
+      timeZone: "Europe/Warsaw",
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
+    }).format(now);
+}
+function updateCountdown() {
+  const target = new Date(settings.date).getTime();
+  const diff = target - Date.now();
+  if (!Number.isFinite(target)) return;
+  if (diff <= 0) {
+    ["days", "hours", "minutes", "seconds"].forEach(id => {
+      document.getElementById(id).textContent = "0";
+    });
+    document.getElementById("gameDate").textContent =
+      "Termin testów już nadszedł: " + formatDate(settings.date);
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+  document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+  document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+}
+function updateLocalOnline() {
+  // To nie jest globalny licznik odwiedzających stronę.
+  document.getElementById("ownersOnline").textContent =
+    currentRole === "owner" ? "1" : "0";
+  document.getElementById("techsOnline").textContent =
+    currentRole === "tech" ? "1" : "0";
+}
+function openLogin() {
+  document.getElementById("loginError").style.display = "none";
+  document.getElementById("loginModal").classList.add("show");
+}
+function closeLogin() {
+  document.getElementById("loginModal").classList.remove("show");
+}
+document.getElementById("loginOpen").addEventListener("click", openLogin);
+document.getElementById("loginClose").addEventListener("click", closeLogin);
+document.getElementById("loginModal").addEventListener("click", e => {
+  if (e.target.id === "loginModal") closeLogin();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeLogin();
+});
+document.getElementById("loginForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const role = document.getElementById("role").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+  const account = ACCOUNTS[role];
+  if (account && username === account.username && password === account.password) {
+    currentRole = role;
+    document.getElementById("adminPanel").classList.remove("hidden");
+    document.getElementById("panelTitle").textContent =
+      "Panel — " + account.label;
+    document.getElementById("loginOpen").textContent = account.label;
+    document.getElementById("loginError").style.display = "none";
+    document.getElementById("adminPanel").scrollIntoView({ behavior: "smooth" });
+    closeLogin();
+    updateLocalOnline();
+    renderPage();
+    showToast("Zalogowano: " + account.label);
+    document.getElementById("password").value = "";
+  } else {
+    document.getElementById("loginError").style.display = "block";
+  }
+});
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  currentRole = null;
+  document.getElementById("adminPanel").classList.add("hidden");
+  document.getElementById("loginOpen").textContent = "Zaloguj";
+  updateLocalOnline();
+  showToast("Wylogowano.");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+document.getElementById("saveDate").addEventListener("click", () => {
+  const value = document.getElementById("dateInput").value;
+  if (!value || Number.isNaN(new Date(value).getTime())) {
+    showToast("Wybierz prawidłową datę i godzinę.");
+    return;
+  }
+  settings.date = value;
+  if (saveSettings()) {
+    renderPage();
+    updateCountdown();
+    showToast("Zapisano termin testów.");
+  }
+});
+document.getElementById("saveAnnouncement").addEventListener("click", () => {
+  settings.announcement = document.getElementById("announcementInput").value.trim();
+  if (saveSettings()) {
+    renderPage();
+    showToast("Zapisano komunikat.");
+  }
+});
+document.getElementById("saveStatus").addEventListener("click", () => {
+  settings.status = document.getElementById("statusInput").value;
+  if (saveSettings()) {
+    renderPage();
+    showToast("Zapisano status projektu.");
+  }
+});
+document.getElementById("saveVersion").addEventListener("click", () => {
+  const version = document.getElementById("versionInput").value.trim();
+  const description = document.getElementById("descriptionInput").value.trim();
+  if (!version) {
+    showToast("Wpisz numer wersji.");
+    return;
+  }
+  settings.version = version;
+  settings.description = description;
+  if (saveSettings()) {
+    renderPage();
+    showToast("Zapisano informacje o wersji.");
+  }
+});
+document.getElementById("addLog").addEventListener("click", () => {
+  const title = document.getElementById("logTitle").value.trim();
+  const description = document.getElementById("logDescription").value.trim();
+  if (!title || !description) {
+    showToast("Wpisz tytuł i opis zmian.");
+    return;
+  }
+  settings.logs.push({
+    title,
+    description,
+    date: new Intl.DateTimeFormat("pl-PL", {
+      timeZone: "Europe/Warsaw",
+      day: "2-digit", month: "2-digit", year: "numeric"
+    }).format(new Date())
+  });
+  if (saveSettings()) {
+    document.getElementById("logTitle").value = "";
+    document.getElementById("logDescription").value = "";
+    renderPage();
+    showToast("Dodano wpis do historii.");
+  }
+});
+document.getElementById("refreshBtn").addEventListener("click", () => {
+  settings = loadSettings();
+  renderPage();
+  updateCountdown();
+  showToast("Odświeżono podgląd.");
+});
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (!confirm("Przywrócić ustawienia początkowe? Usunie to lokalne zmiany tej strony.")) return;
+  settings = structuredClone(DEFAULTS);
+  if (saveSettings()) {
+    renderPage();
+    updateCountdown();
+    showToast("Przywrócono ustawienia początkowe.");
+  }
+});
+renderPage();
+updateClock();
+updateCountdown();
+updateLocalOnline();
+setInterval(updateClock, 1000);
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
     </form>
   </div>
 </div>
