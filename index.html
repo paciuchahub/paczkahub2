@@ -2,624 +2,538 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PACZKA HUB — Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PACZKA HUB — Aktualizacja</title>
 <style>
 :root {
-  --bg:#090b12; --panel:#121522; --panel2:#191d2c;
-  --border:#292e43; --text:#f4f5ff; --muted:#929ab4;
-  --purple:#8957ff; --blue:#408cff; --green:#3dd6a0;
-  --red:#ff647f;
+  --bg:#090a10;
+  --panel:#11131e;
+  --panel2:#171a29;
+  --purple:#8b5cf6;
+  --blue:#4f8cff;
+  --text:#f4f4fb;
+  --muted:#a3a6bd;
+  --border:#292c40;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-button,input,textarea,select{font:inherit}
+body{
+  margin:0;background:radial-gradient(ellipse at top,#17152d,var(--bg) 60%);
+  color:var(--text);font-family:Arial,Helvetica,sans-serif;
+}
+button,input,select,textarea{font:inherit}
 button{cursor:pointer}
+.topbar{
+  position:sticky;top:0;z-index:5;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:12px 5%;
+  background:#0c0d15ed;border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.brand{font-weight:900;letter-spacing:1px}
+.brand span{color:var(--purple)}
+.online{font-size:12px;color:var(--muted);text-align:right}
+.online b{color:#c4b5fd}
+.container{width:min(1000px,92%);margin:32px auto 70px}
+.hero,.card{
+  background:linear-gradient(145deg,#151727,#10111a);
+  border:1px solid var(--border);border-radius:20px;padding:25px;
+  margin-bottom:18px;box-shadow:0 12px 35px #0002;
+}
+.hero{text-align:center;padding:42px 24px}
+.tag{
+  display:inline-block;padding:7px 12px;border:1px solid #554080;
+  background:#211936;border-radius:30px;color:#c4b5fd;
+  font-size:12px;font-weight:bold;
+}
+h1{font-size:clamp(30px,7vw,54px);margin:17px 0 10px}
+h1 span{color:#a78bfa}
+h2{margin-top:0;font-size:21px}
+p{line-height:1.65;color:#c3c5d5}
+.muted{color:var(--muted);font-size:13px}
+.countdown{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:10px;margin:25px auto;max-width:550px
+}
+.timebox{
+  background:#0c0d16;border:1px solid var(--border);
+  padding:17px 5px;border-radius:13px
+}
+.timebox strong{display:block;font-size:26px;color:#c4b5fd}
+.timebox span{font-size:11px;color:var(--muted)}
+.btn{
+  border:0;border-radius:10px;padding:12px 16px;font-weight:bold;
+  color:white;background:linear-gradient(100deg,var(--purple),var(--blue));
+}
+.btn.secondary{background:#202236;border:1px solid #34364c}
+.btn.danger{background:#762f48}
+.btn.small{padding:9px 12px;font-size:12px}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.stat{
+  padding:17px;border-radius:14px;background:#0d0f18;
+  border:1px solid var(--border)
+}
+.stat strong{display:block;font-size:20px;margin-bottom:5px}
+input,select,textarea{
+  width:100%;background:#0b0d15;color:white;
+  border:1px solid #35374d;border-radius:10px;
+  padding:12px;margin:6px 0 14px;outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+label{display:block;font-size:13px;color:#c9cadd}
+textarea{min-height:90px;resize:vertical}
+.notice{
+  padding:14px;border-radius:12px;background:#17132a;
+  border:1px solid #49356f;color:#d8ccff;white-space:pre-wrap
+}
+.listitem{
+  padding:13px 0;border-bottom:1px solid var(--border);
+  overflow-wrap:anywhere
+}
+.listitem:last-child{border-bottom:0}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+.modal{
+  position:fixed;inset:0;z-index:20;display:none;
+  align-items:center;justify-content:center;padding:16px;
+  background:#000b;overflow-y:auto
+}
+.modal.show{display:flex}
+.dialog{
+  width:min(500px,100%);max-height:92vh;overflow-y:auto;
+  background:#121421;border:1px solid #38314f;
+  border-radius:20px;padding:24px;
+  box-shadow:0 20px 80px #0009
+}
+.dialoghead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.close{border:0;background:#252638;color:white;border-radius:8px;padding:8px 12px}
+.adminhead{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px
+}
+.adminlabel{font-size:12px;color:#c4b5fd}
+hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 .hidden{display:none!important}
-button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.btn{border:0;border-radius:10px;padding:11px 15px;background:linear-gradient(120deg,var(--purple),var(--blue));color:white;font-weight:bold}
-.btn:hover{filter:brightness(1.12)}
-.btn.secondary{background:#262b40;border:1px solid #383e57}
-.btn.danger{background:#512435}
-input,textarea,select{width:100%;padding:12px;color:var(--text);background:#0b0e17;border:1px solid var(--border);border-radius:10px}
-label{display:block;margin:15px 0 7px;font-size:13px;color:#c5cbe0}
-textarea{min-height:100px;resize:vertical}
-.muted{color:var(--muted)}
-.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top,#4b2c8750,transparent 60%),var(--bg)}
-.login-card{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:30px;box-shadow:0 25px 80px #0007}
-.brand{display:flex;align-items:center;gap:12px;font-size:21px;font-weight:900}
-.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--blue))}
-.login-card h1{margin-top:28px}
-.login-error{color:var(--red);font-size:13px;margin-top:13px;min-height:18px}
-.small-note{font-size:11px;line-height:1.6;margin-top:20px;color:var(--muted)}
-.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:#0d101a;border-right:1px solid var(--border);padding:22px 15px;display:flex;flex-direction:column;z-index:5}
-.brand-sub{margin:9px 0 25px 55px;color:var(--muted);font-size:10px;letter-spacing:1px}
-.menu-label{font-size:10px;letter-spacing:1.5px;color:#777f99;padding:10px}
-.nav{width:100%;display:block;text-align:left;color:#aeb6ce;background:transparent;border:1px solid transparent;border-radius:10px;padding:12px;margin:3px 0}
-.nav:hover,.nav.active{background:#211a38;color:white;border-color:#3a2c60}
-.nav.active{box-shadow:inset 3px 0 var(--purple)}
-.sidebar-bottom{margin-top:auto}
-.session{padding:13px;background:var(--panel);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;font-size:12px}
-.online-dot{display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin-right:7px}
-.main{margin-left:245px;min-width:0}
-.topbar{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 28px;border-bottom:1px solid var(--border);background:#0d101bea}
-.top-title{font-weight:bold}
-.top-right{display:flex;align-items:center;gap:10px}
-.badge{display:inline-block;border:1px solid #3b305e;background:#211a38;color:#c6b5ff;border-radius:8px;padding:7px 10px;font-size:10px;font-weight:bold}
-.content{padding:28px;max-width:1500px;margin:auto}
-.page{display:none}
-.page.active{display:block}
-.eyebrow{font-size:10px;letter-spacing:1.7px;font-weight:bold;color:#ac96ff}
-h1{font-size:27px;margin:9px 0}
-h2{font-size:17px;margin:0 0 15px}
-h3{font-size:14px;margin:0 0 8px}
-.desc{font-size:13px;line-height:1.7;color:var(--muted)}
-.hero{padding:27px;border:1px solid #3b2b65;border-radius:20px;background:radial-gradient(ellipse at right top,#6946b52c,transparent 55%),linear-gradient(120deg,#171529,#111827);position:relative;overflow:hidden}
-.hero-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
-.hero p{max-width:590px;color:#adb5ce;font-size:13px;line-height:1.8}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0}
-.stat,.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:18px;min-width:0}
-.stat-label{color:var(--muted);font-size:12px}
-.stat-value{font-size:28px;font-weight:900;margin:18px 0 7px;overflow-wrap:anywhere}
-.stat-foot{color:var(--muted);font-size:11px}
-.columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:17px}
-.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-.item{padding:14px 0;border-bottom:1px solid #252a3d}
-.item:last-child{border-bottom:0}
-.item p{font-size:12px;line-height:1.7;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
-.item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.item-actions .btn{font-size:11px;padding:8px 10px}
-.tag{display:inline-block;font-size:10px;background:#222a40;color:#a9c9ff;padding:5px 8px;border-radius:7px;margin:2px 0}
-.empty{font-size:13px;color:var(--muted);padding:15px 0}
-.activity{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #252a3d}
-.activity:last-child{border-bottom:0}
-.activity-icon{width:35px;height:35px;flex-shrink:0;display:grid;place-items:center;background:#27203f;border-radius:10px}
-.activity p{font-size:12px;line-height:1.6;color:var(--muted);margin:5px 0}
-.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.footer{margin-top:24px;color:#747d98;font-size:11px;line-height:1.7}
-@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}}
-@media(max-width:700px){
-.sidebar{position:relative;width:100%;height:auto;padding:12px;border:0;border-bottom:1px solid var(--border)}
-.brand-sub,.menu-label,.sidebar-bottom{display:none}
-.brand{padding:0 4px 12px}
-.navs{display:flex;gap:5px;overflow-x:auto}
-.nav{width:auto;white-space:nowrap;padding:10px;font-size:12px}
-.nav.active{box-shadow:inset 0 -2px var(--purple)}
-.main{margin-left:0}
-.topbar{padding:14px 16px}
-.top-right .badge{display:none}
-.content{padding:16px}
-.hero{padding:20px}
-h1{font-size:23px}
-.stat{padding:13px}
-.stat-value{font-size:23px}
+#toast{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:#24263a;border:1px solid #474b67;padding:12px 18px;
+  border-radius:10px;display:none;z-index:40;max-width:90%;text-align:center
+}
+@media(max-width:650px){
+  .grid{grid-template-columns:1fr}
+  .hero{padding:30px 17px}
+  .card{padding:19px}
+  .topbar{padding:12px 4%}
+  .countdown{gap:6px}
+  .timebox strong{font-size:21px}
 }
 </style>
 </head>
 <body>
-
-<!-- LOGOWANIE: dane pozostawione bez zmian -->
-<div id="loginScreen" class="login-screen">
-  <div class="login-card">
-    <div class="brand"><div class="logo">📦</div><div>PACZKA HUB</div></div>
-    <h1>Panel administracyjny</h1>
-    <p class="muted">Zaloguj się do centrum zarządzania.</p>
+<header class="topbar">
+  <div class="brand">PACZKA <span>HUB</span></div>
+  <div>
+    <div class="online">Właściciele online: <b id="ownersOnline">0</b></div>
+    <div class="online">Technicy online: <b id="techsOnline">0</b></div>
+  </div>
+  <button class="btn small" id="loginOpen">Zaloguj</button>
+</header>
+<main class="container">
+  <section class="hero">
+    <span class="tag">BETA 0.1.0</span>
+    <h1>Witaj w <span>PACZKA HUB</span></h1>
+    <p>Wszystkie najważniejsze informacje o projekcie, testach i aktualizacjach w jednym miejscu.</p>
+    <div class="countdown">
+      <div class="timebox"><strong id="days">--</strong><span>DNI</span></div>
+      <div class="timebox"><strong id="hours">--</strong><span>GODZIN</span></div>
+      <div class="timebox"><strong id="minutes">--</strong><span>MINUT</span></div>
+      <div class="timebox"><strong id="seconds">--</strong><span>SEKUND</span></div>
+    </div>
+    <p id="gameDate" class="muted">Termin testów: 20.10.2026, godz. 18:00</p>
+    <div class="actions">
+      <button class="btn" onclick="document.getElementById('announcementSection').scrollIntoView({behavior:'smooth'})">Aktualności</button>
+      <button class="btn secondary" onclick="document.getElementById('aboutSection').scrollIntoView({behavior:'smooth'})">O projekcie</button>
+    </div>
+  </section>
+  <section class="card">
+    <h2>📢 Komunikat projektu</h2>
+    <div id="announcementSection" class="notice">Witaj w PACZKA HUB! Więcej informacji wkrótce.</div>
+    <p class="muted" id="statusText">Status projektu: Przygotowania do bety</p>
+  </section>
+  <section class="grid">
+    <div class="card">
+      <h2>🛠️ Informacje o projekcie</h2>
+      <div class="stat"><strong id="versionDisplay">BETA 0.1.0</strong><span class="muted">Aktualna wersja</span></div>
+      <p id="projectDescription">PACZKA HUB — projekt w trakcie przygotowań do testów.</p>
+    </div>
+    <div class="card">
+      <h2>🕒 Aktualny czas</h2>
+      <div class="stat"><strong id="clock">--:--:--</strong><span class="muted" id="today">Ładowanie daty...</span></div>
+      <p class="muted">Czas wyświetlany według strefy Europe/Warsaw.</p>
+    </div>
+  </section>
+  <section class="card" id="aboutSection">
+    <h2>👋 O projekcie</h2>
+    <p>PACZKA HUB to miejsce z informacjami o projekcie, postępach i planowanych testach.</p>
+    <p>Znajdziesz tutaj aktualności, wersję projektu i termin bety.</p>
+  </section>
+  <section class="card">
+    <h2>📋 Historia aktualizacji</h2>
+    <div id="changelog">
+      <div class="listitem"><b>Wersja BETA 0.1.0</b><br><span class="muted">Przygotowanie strony projektu.</span></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>📬 Kontakt</h2>
+    <p>Masz pytanie dotyczące projektu?</p>
+    <p><a style="color:#b9a1ff" href="mailto:kontaktpaczkahub@gmail.com">kontaktpaczkahub@gmail.com</a></p>
+    <p><a style="color:#b9a1ff" href="https://www.roblox.com/users/5868743919/profile" target="_blank" rel="noopener noreferrer">Profil Roblox</a></p>
+  </section>
+  <section class="card hidden" id="adminPanel">
+    <div class="adminhead">
+      <div>
+        <span class="adminlabel">PANEL ADMINISTRACYJNY</span>
+        <h2 style="margin:7px 0" id="panelTitle">Panel</h2>
+      </div>
+      <button class="btn secondary small" id="logoutBtn">Wyloguj</button>
+    </div>
+    <p class="muted">Wspólny zestaw narzędzi dla właściciela i technika.</p>
+    <hr>
+    <h2>📅 Termin testów</h2>
+    <label for="dateInput">Data i godzina testów</label>
+    <input id="dateInput" type="datetime-local">
+    <button class="btn" id="saveDate">Zapisz termin</button>
+    <hr>
+    <h2>📢 Komunikat dla odwiedzających</h2>
+    <label for="announcementInput">Treść komunikatu</label>
+    <textarea id="announcementInput" placeholder="Wpisz komunikat..."></textarea>
+    <button class="btn" id="saveAnnouncement">Opublikuj komunikat</button>
+    <hr>
+    <h2>⚙️ Status projektu</h2>
+    <label for="statusInput">Wybierz status</label>
+    <select id="statusInput">
+      <option>Przygotowania do bety</option>
+      <option>Testy beta wkrótce</option>
+      <option>Testy beta trwają</option>
+      <option>Aktualizacja w trakcie</option>
+      <option>Przerwa techniczna</option>
+      <option>Projekt chwilowo wstrzymany</option>
+    </select>
+    <button class="btn" id="saveStatus">Zapisz status</button>
+    <hr>
+    <h2>🚀 Wersja projektu</h2>
+    <label for="versionInput">Numer wersji</label>
+    <input id="versionInput" placeholder="np. BETA 0.1.1">
+    <label for="descriptionInput">Opis projektu</label>
+    <textarea id="descriptionInput" placeholder="Krótki opis bieżącego etapu..."></textarea>
+    <button class="btn" id="saveVersion">Zapisz informacje</button>
+    <hr>
+    <h2>📝 Dodaj wpis do historii</h2>
+    <label for="logTitle">Tytuł wpisu</label>
+    <input id="logTitle" placeholder="np. BETA 0.1.1 — nowości">
+    <label for="logDescription">Opis zmian</label>
+    <textarea id="logDescription" placeholder="Co zostało zmienione?"></textarea>
+    <button class="btn" id="addLog">Dodaj do historii</button>
+    <hr>
+    <h2>🔄 Narzędzia</h2>
+    <div class="actions" style="justify-content:flex-start">
+      <button class="btn secondary" id="refreshBtn">Odśwież podgląd</button>
+      <button class="btn danger" id="resetBtn">Przywróć ustawienia początkowe</button>
+    </div>
+    <p class="muted">Zmiany są zapisywane w pamięci tej przeglądarki. Przy statycznym GitHub Pages nie będą automatycznie widoczne dla innych odwiedzających.</p>
+  </section>
+</main>
+<footer>© <span id="year"></span> PACZKA HUB · BETA 0.1.0</footer>
+<!-- OKNO LOGOWANIA -->
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="dialog">
+    <div class="dialoghead">
+      <h2 id="loginTitle">🔐 Logowanie</h2>
+      <button class="close" id="loginClose" aria-label="Zamknij">✕</button>
+    </div>
+    <p class="muted">Wybierz typ konta i wpisz dane.</p>
     <form id="loginForm">
+      <label for="role">Typ konta</label>
+      <select id="role">
+        <option value="owner">Właściciel</option>
+        <option value="tech">Technik</option>
+      </select>
       <label for="username">Login</label>
-      <input id="username" autocomplete="username" required placeholder="Wpisz login">
+      <input id="username" autocomplete="username" required>
       <label for="password">Hasło</label>
-      <input id="password" type="password" autocomplete="current-password" required placeholder="Wpisz hasło">
-      <button class="btn" style="width:100%;margin-top:20px" type="submit">Zaloguj się →</button>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <p id="loginError" style="color:#ff8b9c;display:none">Nieprawidłowy login lub hasło.</p>
+      <button class="btn" style="width:100%" type="submit">Zaloguj do panelu</button>
     </form>
-    <div id="loginError" class="login-error" role="status"></div>
-    <div class="small-note">To demonstracyjne logowanie. Hasła zapisane w kodzie HTML nie chronią prawdziwych danych.</div>
   </div>
 </div>
-
-<div id="app" class="hidden">
-  <aside class="sidebar">
-    <div class="brand"><div class="logo">📦</div><div>PACZKA HUB</div></div>
-    <div class="brand-sub">ADMINISTRATION CENTER</div>
-    <div class="menu-label">MENU GŁÓWNE</div>
-    <nav class="navs">
-      <button class="nav active" data-page="overview">◈　Przegląd</button>
-      <button class="nav" data-page="updates">▤　Aktualizacje</button>
-      <button class="nav" data-page="projects">◫　Projekty i zadania</button>
-      <button class="nav" data-page="settings">⚙　Ustawienia</button>
-      <button class="nav" data-page="activity">◷　Historia działań</button>
-    </nav>
-    <div class="sidebar-bottom">
-      <div class="session"><span class="online-dot"></span><strong id="sessionName">Sesja aktywna</strong><div class="muted" style="margin-top:7px">Administrator</div></div>
-      <button class="nav" id="logout">⇥　Wyloguj się</button>
-    </div>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div><div class="top-title" id="topTitle">Przegląd</div><div id="clock" class="muted" style="font-size:11px;margin-top:5px"></div></div>
-      <div class="top-right"><span class="badge">● PEŁNE UPRAWNIENIA</span><button class="btn secondary" id="topLogout">Wyloguj</button></div>
-    </header>
-
-    <div class="content">
-      <section id="page-overview" class="page active">
-        <div class="hero">
-          <div class="hero-row"><div>
-            <div class="eyebrow">CENTRUM ZARZĄDZANIA</div>
-            <h1>Witaj w PACZKA HUB 👋</h1>
-            <p>Zarządzaj aktualizacjami, projektami, ustawieniami i historią zmian w jednym miejscu. Właściciel i technik mają tutaj takie same narzędzia.</p>
-            <button class="btn" data-goto="updates">＋ Dodaj aktualizację</button>
-          </div><span class="badge">BETA 0.1.0</span></div>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="stat-label">Aktualizacje</div><div class="stat-value" id="statUpdates">0</div><div class="stat-foot">Wpisy w dzienniku zmian</div></div>
-          <div class="stat"><div class="stat-label">Projekty i zadania</div><div class="stat-value" id="statProjects">0</div><div class="stat-foot">Wszystkie pozycje</div></div>
-          <div class="stat"><div class="stat-label">Ukończone zadania</div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Zakończone projekty</div></div>
-          <div class="stat"><div class="stat-label">Status strony</div><div class="stat-value" style="font-size:21px" id="statStatus">BETA</div><div class="stat-foot">Aktualny status projektu</div></div>
-        </div>
-        <div class="columns">
-          <div class="card"><div class="card-head"><h2>Ostatnie aktualizacje</h2><button class="btn secondary" data-goto="updates">Zobacz</button></div><div id="recentUpdates"></div></div>
-          <div class="card"><h2>Centrum informacji</h2>
-            <div class="activity"><div class="activity-icon">🔐</div><div><strong>Jednakowe uprawnienia</strong><p>Oba konta mogą korzystać z każdej sekcji panelu.</p></div></div>
-            <div class="activity"><div class="activity-icon">💾</div><div><strong>Zapis w przeglądarce</strong><p>Zmiany są zapisywane lokalnie na tym urządzeniu.</p></div></div>
-            <div class="activity"><div class="activity-icon">🕒</div><div><strong>Polski czas</strong><p id="dashboardDate">Ładowanie daty…</p></div></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="page-updates" class="page">
-        <div class="eyebrow">DZIENNIK ZMIAN</div><h1>Aktualizacje</h1><p class="desc">Twórz, edytuj i usuwaj wpisy dotyczące nowych funkcji i poprawek.</p>
-        <div class="columns">
-          <div class="card"><h2>Nowa aktualizacja</h2>
-            <form id="updateForm">
-              <label for="updateTitle">Tytuł</label><input id="updateTitle" maxlength="100" required placeholder="Np. BETA 0.1.1">
-              <label for="updateCategory">Kategoria</label><select id="updateCategory"><option>Nowość</option><option>Poprawka</option><option>Zmiana</option><option>Informacja</option></select>
-              <label for="updateText">Opis zmian</label><textarea id="updateText" maxlength="3000" required placeholder="Co zostało zmienione?"></textarea>
-              <button class="btn" style="width:100%;margin-top:18px" type="submit">＋ Opublikuj wpis</button>
-            </form>
-          </div>
-          <div class="card"><div class="card-head"><h2>Historia aktualizacji</h2><span class="tag" id="updateCount">0 wpisów</span></div><div id="updatesList"></div></div>
-        </div>
-      </section>
-
-      <section id="page-projects" class="page">
-        <div class="eyebrow">PLANOWANIE PRACY</div><h1>Projekty i zadania</h1><p class="desc">Twórz zadania, aktualizuj ich status, edytuj opisy i usuwaj ukończone pozycje.</p>
-        <div class="columns">
-          <div class="card"><h2>Dodaj zadanie</h2>
-            <form id="projectForm">
-              <label for="projectTitle">Nazwa</label><input id="projectTitle" maxlength="100" required placeholder="Nazwa projektu lub zadania">
-              <label for="projectDescription">Opis</label><textarea id="projectDescription" maxlength="1000" placeholder="Szczegóły zadania"></textarea>
-              <label for="projectStatus">Status</label><select id="projectStatus"><option>Do zrobienia</option><option>W trakcie</option><option>Ukończone</option></select>
-              <button class="btn" style="width:100%;margin-top:18px" type="submit">＋ Dodaj zadanie</button>
-            </form>
-          </div>
-          <div class="card"><div class="card-head"><h2>Lista zadań</h2><span class="tag" id="projectCount">0 pozycji</span></div><div id="projectsList"></div></div>
-        </div>
-      </section>
-
-      <section id="page-settings" class="page">
-        <div class="eyebrow">KONFIGURACJA</div><h1>Ustawienia</h1><p class="desc">Zarządzaj wersją, statusem i datą planowanych testów beta.</p>
-        <div class="columns">
-          <div class="card"><h2>Ustawienia projektu</h2>
-            <form id="settingsForm">
-              <label for="siteVersion">Wersja</label><input id="siteVersion" maxlength="30" required>
-              <label for="siteStatus">Status</label><select id="siteStatus"><option>BETA</option><option>W trakcie prac</option><option>Przerwa techniczna</option><option>Opublikowany</option></select>
-              <label for="betaDate">Data testów beta</label><input id="betaDate" type="datetime-local">
-              <button class="btn" style="width:100%;margin-top:18px" type="submit">Zapisz ustawienia</button>
-            </form>
-            <p class="muted" style="font-size:11px;line-height:1.6">Zmiany dotyczą tej przeglądarki. Nie aktualizują automatycznie innych urządzeń ani plików GitHub.</p>
-          </div>
-          <div class="card"><h2>Informacje o sesji</h2>
-            <div class="activity"><div class="activity-icon">👤</div><div><strong id="accountName">Administrator</strong><p>Aktualnie zalogowane konto</p></div></div>
-            <div class="activity"><div class="activity-icon">🛡️</div><div><strong>Pełne uprawnienia</strong><p>Oba konta mają dostęp do wszystkich funkcji panelu.</p></div></div>
-            <button class="btn danger" id="clearData" style="margin-top:18px">Usuń wszystkie lokalne dane</button>
-            <p class="muted" style="font-size:11px;line-height:1.6">Operacja usuwa lokalne wpisy, zadania i ustawienia. Nie można jej cofnąć.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="page-activity" class="page">
-        <div class="eyebrow">REJESTR</div><h1>Historia działań</h1><p class="desc">Historia działań wykonanych podczas pracy w panelu na tym urządzeniu.</p>
-        <div class="card"><div class="card-head"><h2>Ostatnie działania</h2><button class="btn secondary" id="clearActivity">Wyczyść historię</button></div><div id="activityList"></div></div>
-      </section>
-
-      <div class="footer">PACZKA HUB • Panel administracyjny • Dane demonstracyjne zapisane lokalnie.</div>
-    </div>
-  </main>
-</div>
-
+<div id="toast" role="status"></div>
 <script>
 "use strict";
-
-/* LOGOWANIE POZOSTAWIONE BEZ ZMIAN */
+/*
+  DANE LOGOWANIA:
+  Właściciel: wlasciciel / wlasciciel1
+  Technik:    technik    / technik1
+  UWAGA: To jest logowanie demonstracyjne po stronie przeglądarki.
+  Nie zabezpiecza poufnych danych na publicznej stronie.
+*/
 const ACCOUNTS = {
-  wlasciciel: { password: "wlasciciel", name: "Właściciel" },
-  technik: { password: "technik1", name: "Technik" }
+  owner: { username: "wlasciciel", password: "wlasciciel1", label: "Właściciel" },
+  tech:  { username: "technik", password: "technik1", label: "Technik" }
 };
-
-const $ = id => document.getElementById(id);
-const KEY = "paczkaHubAdminDataV2";
-const defaults = () => ({
-  version:"BETA 0.1.0",
-  status:"BETA",
-  betaDate:"2026-10-20T18:00",
-  updates:[],
-  projects:[],
-  activity:[]
-});
-
-let data = loadData();
-let currentAccount = null;
-
-function loadData() {
-  try {
-    const value = localStorage.getItem(KEY);
-    if (value) {
-      const parsed = JSON.parse(value);
-      const base = defaults();
-      return {
-        ...base, ...parsed,
-        updates:Array.isArray(parsed.updates) ? parsed.updates : [],
-        projects:Array.isArray(parsed.projects) ? parsed.projects : [],
-        activity:Array.isArray(parsed.activity) ? parsed.activity : []
-      };
+const DEFAULTS = {
+  date: "2026-10-20T18:00",
+  announcement: "Witaj w PACZKA HUB! Więcej informacji wkrótce.",
+  status: "Przygotowania do bety",
+  version: "BETA 0.1.0",
+  description: "PACZKA HUB — projekt w trakcie przygotowań do testów.",
+  logs: [
+    {
+      title: "Wersja BETA 0.1.0",
+      description: "Przygotowanie strony projektu.",
+      date: new Date().toLocaleDateString("pl-PL")
     }
-  } catch (e) {}
-  return defaults();
-}
-
-function saveData() {
+  ]
+};
+const STORAGE_KEY = "paczkaHubSettingsV1";
+let settings = loadSettings();
+let currentRole = null;
+let toastTimer;
+function loadSettings() {
   try {
-    localStorage.setItem(KEY, JSON.stringify(data));
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return { ...structuredClone(DEFAULTS), ...JSON.parse(saved) };
+  } catch (e) {
+    console.warn("Nie udało się wczytać ustawień.", e);
+  }
+  return structuredClone(DEFAULTS);
+}
+function saveSettings() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     return true;
   } catch (e) {
-    alert("Nie udało się zapisać danych w tej przeglądarce.");
+    showToast("Nie udało się zapisać ustawień w przeglądarce.");
     return false;
   }
 }
-
-function id() {
-  return window.crypto && crypto.randomUUID
-    ? crypto.randomUUID()
-    : String(Date.now()) + Math.random().toString(16).slice(2);
+function showToast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.style.display = "none", 2800);
 }
-
-function element(tag, cls, text) {
-  const node = document.createElement(tag);
-  if (cls) node.className = cls;
-  if (text !== undefined) node.textContent = text;
-  return node;
-}
-
-function logAction(text) {
-  data.activity.unshift({
-    id:id(),
-    text,
-    actor:currentAccount ? currentAccount.name : "System",
-    date:new Date().toISOString()
+function renderPage() {
+  document.getElementById("gameDate").textContent =
+    "Termin testów: " + formatDate(settings.date);
+  document.getElementById("announcementSection").textContent =
+    settings.announcement || "Brak nowego komunikatu.";
+  document.getElementById("statusText").textContent =
+    "Status projektu: " + settings.status;
+  document.getElementById("versionDisplay").textContent = settings.version;
+  document.getElementById("projectDescription").textContent = settings.description;
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const list = document.getElementById("changelog");
+  list.replaceChildren();
+  [...settings.logs].reverse().forEach(item => {
+    const div = document.createElement("div");
+    div.className = "listitem";
+    const title = document.createElement("b");
+    title.textContent = item.title;
+    const date = document.createElement("div");
+    date.className = "muted";
+    date.textContent = item.date || "";
+    const desc = document.createElement("p");
+    desc.textContent = item.description;
+    div.append(title, date, desc);
+    list.appendChild(div);
   });
-  data.activity = data.activity.slice(0,100);
-  saveData();
-  renderActivity();
+  document.getElementById("dateInput").value = settings.date;
+  document.getElementById("announcementInput").value = settings.announcement;
+  document.getElementById("statusInput").value = settings.status;
+  document.getElementById("versionInput").value = settings.version;
+  document.getElementById("descriptionInput").value = settings.description;
 }
-
-function dateText(value) {
-  if (!value) return "Brak daty";
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "Brak daty" :
-    date.toLocaleString("pl-PL", {timeZone:"Europe/Warsaw"});
+function formatDate(value) {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  return new Intl.DateTimeFormat("pl-PL", {
+    timeZone: "Europe/Warsaw",
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit"
+  }).format(d);
 }
-
-$("loginForm").addEventListener("submit", event => {
-  event.preventDefault();
-  const username = $("username").value.trim().toLowerCase();
-  const password = $("password").value;
-  const account = ACCOUNTS[username];
-
-  if (!account || account.password !== password) {
-    $("loginError").textContent = "Nieprawidłowy login lub hasło.";
-    return;
-  }
-
-  currentAccount = {username, name:account.name};
-  $("loginError").textContent = "";
-  $("sessionName").textContent = account.name;
-  $("accountName").textContent = account.name + " (" + username + ")";
-  $("loginScreen").classList.add("hidden");
-  $("app").classList.remove("hidden");
-  logAction("Zalogowano do panelu.");
-  renderAll();
-  showPage("overview");
-});
-
-function logout() {
-  if (currentAccount) logAction("Wylogowano z panelu.");
-  currentAccount = null;
-  $("app").classList.add("hidden");
-  $("loginScreen").classList.remove("hidden");
-  $("loginForm").reset();
-  $("loginError").textContent = "";
-}
-$("logout").addEventListener("click", logout);
-$("topLogout").addEventListener("click", logout);
-
-const titles = {
-  overview:"Przegląd",
-  updates:"Aktualizacje",
-  projects:"Projekty i zadania",
-  settings:"Ustawienia",
-  activity:"Historia działań"
-};
-
-function showPage(name) {
-  document.querySelectorAll(".page").forEach(p =>
-    p.classList.toggle("active", p.id === "page-" + name)
-  );
-  document.querySelectorAll("[data-page]").forEach(b =>
-    b.classList.toggle("active", b.dataset.page === name)
-  );
-  $("topTitle").textContent = titles[name] || "Panel";
-}
-
-document.querySelectorAll("[data-page]").forEach(button =>
-  button.addEventListener("click", () => showPage(button.dataset.page))
-);
-document.querySelectorAll("[data-goto]").forEach(button =>
-  button.addEventListener("click", () => showPage(button.dataset.goto))
-);
-
-function renderAll() {
-  renderUpdates();
-  renderProjects();
-  renderSettings();
-  renderActivity();
-  renderStats();
-}
-
-function renderStats() {
-  $("statUpdates").textContent = data.updates.length;
-  $("statProjects").textContent = data.projects.length;
-  $("statDone").textContent = data.projects.filter(p => p.status === "Ukończone").length;
-  $("statStatus").textContent = data.status;
-}
-
-function renderUpdates() {
-  $("updatesList").replaceChildren();
-  $("recentUpdates").replaceChildren();
-  $("updateCount").textContent = data.updates.length + " wpisów";
-
-  if (!data.updates.length) {
-    $("updatesList").append(element("div","empty","Brak aktualizacji."));
-    $("recentUpdates").append(element("div","empty","Dodaj pierwszy wpis w sekcji Aktualizacje."));
-    return;
-  }
-
-  data.updates.forEach((u,index) => {
-    const item = element("div","item");
-    item.append(element("h3","",u.title));
-    item.append(element("span","tag",u.category));
-    item.append(element("div","muted",dateText(u.createdAt)));
-    item.append(element("p","",u.text));
-
-    const actions = element("div","item-actions");
-    const edit = element("button","btn secondary","Edytuj");
-    edit.type = "button";
-    edit.addEventListener("click",() => editUpdate(u.id));
-    const remove = element("button","btn danger","Usuń");
-    remove.type = "button";
-    remove.addEventListener("click",() => deleteUpdate(u.id));
-    actions.append(edit,remove);
-    item.append(actions);
-    $("updatesList").append(item);
-
-    if (index < 3) {
-      const recent = element("div","activity");
-      recent.append(element("div","activity-icon","▤"));
-      const details = element("div");
-      details.append(element("strong","",u.title));
-      details.append(element("p","",u.category + " • " + dateText(u.createdAt)));
-      recent.append(details);
-      $("recentUpdates").append(recent);
-    }
-  });
-}
-
-$("updateForm").addEventListener("submit",event => {
-  event.preventDefault();
-  const title = $("updateTitle").value.trim();
-  const text = $("updateText").value.trim();
-  if (!title || !text) return;
-
-  data.updates.unshift({
-    id:id(), title, text,
-    category:$("updateCategory").value,
-    createdAt:new Date().toISOString()
-  });
-
-  if (saveData()) {
-    logAction("Dodano aktualizację: " + title);
-    $("updateForm").reset();
-    renderAll();
-  }
-});
-
-function editUpdate(updateId) {
-  const u = data.updates.find(item => item.id === updateId);
-  if (!u) return;
-  const title = prompt("Nowy tytuł:",u.title);
-  if (title === null) return;
-  const text = prompt("Nowy opis:",u.text);
-  if (text === null) return;
-  if (!title.trim() || !text.trim()) return alert("Tytuł i opis nie mogą być puste.");
-  u.title = title.trim();
-  u.text = text.trim();
-  if (saveData()) {
-    logAction("Edytowano aktualizację: " + u.title);
-    renderAll();
-  }
-}
-
-function deleteUpdate(updateId) {
-  const u = data.updates.find(item => item.id === updateId);
-  if (!u || !confirm("Usunąć tę aktualizację?")) return;
-  data.updates = data.updates.filter(item => item.id !== updateId);
-  if (saveData()) {
-    logAction("Usunięto aktualizację: " + u.title);
-    renderAll();
-  }
-}
-
-$("projectForm").addEventListener("submit",event => {
-  event.preventDefault();
-  const title = $("projectTitle").value.trim();
-  if (!title) return;
-
-  data.projects.unshift({
-    id:id(),
-    title,
-    description:$("projectDescription").value.trim(),
-    status:$("projectStatus").value,
-    createdAt:new Date().toISOString()
-  });
-
-  if (saveData()) {
-    logAction("Dodano zadanie: " + title);
-    $("projectForm").reset();
-    renderAll();
-  }
-});
-
-function renderProjects() {
-  $("projectsList").replaceChildren();
-  $("projectCount").textContent = data.projects.length + " pozycji";
-
-  if (!data.projects.length) {
-    $("projectsList").append(element("div","empty","Brak projektów i zadań."));
-    return;
-  }
-
-  data.projects.forEach(project => {
-    const item = element("div","item");
-    item.append(element("h3","",project.title));
-    item.append(element("p","",project.description || "Brak opisu."));
-
-    const status = document.createElement("select");
-    ["Do zrobienia","W trakcie","Ukończone"].forEach(value => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = value;
-      option.selected = value === project.status;
-      status.append(option);
-    });
-    status.addEventListener("change",() => {
-      project.status = status.value;
-      if (saveData()) {
-        logAction("Zmieniono status zadania: " + project.title + " → " + status.value);
-        renderAll();
-      }
-    });
-
-    const actions = element("div","item-actions");
-    const edit = element("button","btn secondary","Edytuj");
-    edit.type = "button";
-    edit.addEventListener("click",() => editProject(project.id));
-    const remove = element("button","btn danger","Usuń");
-    remove.type = "button";
-    remove.addEventListener("click",() => deleteProject(project.id));
-    actions.append(edit,remove);
-
-    item.append(element("label","","Status"),status,actions);
-    $("projectsList").append(item);
-  });
-}
-
-function editProject(projectId) {
-  const p = data.projects.find(item => item.id === projectId);
-  if (!p) return;
-  const title = prompt("Nazwa zadania:",p.title);
-  if (title === null) return;
-  const description = prompt("Opis:",p.description);
-  if (description === null) return;
-  if (!title.trim()) return alert("Nazwa nie może być pusta.");
-  p.title = title.trim();
-  p.description = description.trim();
-  if (saveData()) {
-    logAction("Edytowano zadanie: " + p.title);
-    renderAll();
-  }
-}
-
-function deleteProject(projectId) {
-  const p = data.projects.find(item => item.id === projectId);
-  if (!p || !confirm("Usunąć to zadanie?")) return;
-  data.projects = data.projects.filter(item => item.id !== projectId);
-  if (saveData()) {
-    logAction("Usunięto zadanie: " + p.title);
-    renderAll();
-  }
-}
-
-function renderSettings() {
-  $("siteVersion").value = data.version;
-  $("siteStatus").value = data.status;
-  $("betaDate").value = data.betaDate || "";
-  $("dashboardDate").textContent = dateText(new Date().toISOString());
-}
-
-$("settingsForm").addEventListener("submit",event => {
-  event.preventDefault();
-  data.version = $("siteVersion").value.trim() || "BETA 0.1.0";
-  data.status = $("siteStatus").value;
-  data.betaDate = $("betaDate").value;
-  if (saveData()) {
-    logAction("Zapisano ustawienia projektu.");
-    renderAll();
-    alert("Ustawienia zapisane w tej przeglądarce.");
-  }
-});
-
-function renderActivity() {
-  $("activityList").replaceChildren();
-  if (!data.activity.length) {
-    $("activityList").append(element("div","empty","Nie ma jeszcze zarejestrowanych działań."));
-    return;
-  }
-  data.activity.forEach(entry => {
-    const row = element("div","activity");
-    row.append(element("div","activity-icon","◷"));
-    const details = element("div");
-    details.append(element("strong","",entry.text));
-    details.append(element("p","",entry.actor + " • " + dateText(entry.date)));
-    row.append(details);
-    $("activityList").append(row);
-  });
-}
-
-$("clearActivity").addEventListener("click",() => {
-  if (!confirm("Wyczyścić historię działań?")) return;
-  data.activity = [];
-  saveData();
-  renderActivity();
-});
-
-$("clearData").addEventListener("click",() => {
-  if (!confirm("Usunąć wszystkie aktualizacje, projekty i ustawienia zapisane lokalnie?")) return;
-  data = defaults();
-  if (saveData()) {
-    logAction("Wyczyszczono lokalne dane panelu.");
-    renderAll();
-    alert("Lokalne dane zostały usunięte.");
-  }
-});
-
 function updateClock() {
-  $("clock").textContent = new Date().toLocaleString("pl-PL",{
-    timeZone:"Europe/Warsaw",
-    dateStyle:"medium",
-    timeStyle:"medium"
-  });
+  const now = new Date();
+  document.getElementById("clock").textContent =
+    new Intl.DateTimeFormat("pl-PL", {
+      timeZone: "Europe/Warsaw",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    }).format(now);
+  document.getElementById("today").textContent =
+    new Intl.DateTimeFormat("pl-PL", {
+      timeZone: "Europe/Warsaw",
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
+    }).format(now);
 }
+function updateCountdown() {
+  const target = new Date(settings.date).getTime();
+  const diff = target - Date.now();
+  if (!Number.isFinite(target)) return;
+  if (diff <= 0) {
+    ["days", "hours", "minutes", "seconds"].forEach(id => {
+      document.getElementById(id).textContent = "0";
+    });
+    document.getElementById("gameDate").textContent =
+      "Termin testów już nadszedł: " + formatDate(settings.date);
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+  document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+  document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+}
+function updateLocalOnline() {
+  // To nie jest globalny licznik odwiedzających stronę.
+  document.getElementById("ownersOnline").textContent =
+    currentRole === "owner" ? "1" : "0";
+  document.getElementById("techsOnline").textContent =
+    currentRole === "tech" ? "1" : "0";
+}
+function openLogin() {
+  document.getElementById("loginError").style.display = "none";
+  document.getElementById("loginModal").classList.add("show");
+}
+function closeLogin() {
+  document.getElementById("loginModal").classList.remove("show");
+}
+document.getElementById("loginOpen").addEventListener("click", openLogin);
+document.getElementById("loginClose").addEventListener("click", closeLogin);
+document.getElementById("loginModal").addEventListener("click", e => {
+  if (e.target.id === "loginModal") closeLogin();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeLogin();
+});
+document.getElementById("loginForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const role = document.getElementById("role").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+  const account = ACCOUNTS[role];
+  if (account && username === account.username && password === account.password) {
+    currentRole = role;
+    document.getElementById("adminPanel").classList.remove("hidden");
+    document.getElementById("panelTitle").textContent =
+      "Panel — " + account.label;
+    document.getElementById("loginOpen").textContent = account.label;
+    document.getElementById("loginError").style.display = "none";
+    document.getElementById("adminPanel").scrollIntoView({ behavior: "smooth" });
+    closeLogin();
+    updateLocalOnline();
+    renderPage();
+    showToast("Zalogowano: " + account.label);
+    document.getElementById("password").value = "";
+  } else {
+    document.getElementById("loginError").style.display = "block";
+  }
+});
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  currentRole = null;
+  document.getElementById("adminPanel").classList.add("hidden");
+  document.getElementById("loginOpen").textContent = "Zaloguj";
+  updateLocalOnline();
+  showToast("Wylogowano.");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+document.getElementById("saveDate").addEventListener("click", () => {
+  const value = document.getElementById("dateInput").value;
+  if (!value || Number.isNaN(new Date(value).getTime())) {
+    showToast("Wybierz prawidłową datę i godzinę.");
+    return;
+  }
+  settings.date = value;
+  if (saveSettings()) {
+    renderPage();
+    updateCountdown();
+    showToast("Zapisano termin testów.");
+  }
+});
+document.getElementById("saveAnnouncement").addEventListener("click", () => {
+  settings.announcement = document.getElementById("announcementInput").value.trim();
+  if (saveSettings()) {
+    renderPage();
+    showToast("Zapisano komunikat.");
+  }
+});
+document.getElementById("saveStatus").addEventListener("click", () => {
+  settings.status = document.getElementById("statusInput").value;
+  if (saveSettings()) {
+    renderPage();
+    showToast("Zapisano status projektu.");
+  }
+});
+document.getElementById("saveVersion").addEventListener("click", () => {
+  const version = document.getElementById("versionInput").value.trim();
+  const description = document.getElementById("descriptionInput").value.trim();
+  if (!version) {
+    showToast("Wpisz numer wersji.");
+    return;
+  }
+  settings.version = version;
+  settings.description = description;
+  if (saveSettings()) {
+    renderPage();
+    showToast("Zapisano informacje o wersji.");
+  }
+});
+document.getElementById("addLog").addEventListener("click", () => {
+  const title = document.getElementById("logTitle").value.trim();
+  const description = document.getElementById("logDescription").value.trim();
+  if (!title || !description) {
+    showToast("Wpisz tytuł i opis zmian.");
+    return;
+  }
+  settings.logs.push({
+    title,
+    description,
+    date: new Intl.DateTimeFormat("pl-PL", {
+      timeZone: "Europe/Warsaw",
+      day: "2-digit", month: "2-digit", year: "numeric"
+    }).format(new Date())
+  });
+  if (saveSettings()) {
+    document.getElementById("logTitle").value = "";
+    document.getElementById("logDescription").value = "";
+    renderPage();
+    showToast("Dodano wpis do historii.");
+  }
+});
+document.getElementById("refreshBtn").addEventListener("click", () => {
+  settings = loadSettings();
+  renderPage();
+  updateCountdown();
+  showToast("Odświeżono podgląd.");
+});
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (!confirm("Przywrócić ustawienia początkowe? Usunie to lokalne zmiany tej strony.")) return;
+  settings = structuredClone(DEFAULTS);
+  if (saveSettings()) {
+    renderPage();
+    updateCountdown();
+    showToast("Przywrócono ustawienia początkowe.");
+  }
+});
+renderPage();
 updateClock();
-setInterval(updateClock,1000);
+updateCountdown();
+updateLocalOnline();
+setInterval(updateClock, 1000);
+setInterval(updateCountdown, 1000);
 </script>
 </body>
 </html>
