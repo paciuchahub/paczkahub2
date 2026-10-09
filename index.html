@@ -1,388 +1,189 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PACZKA HUB — Aktualizacja</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
- font-family:Arial,Helvetica,sans-serif;color:#fff;min-height:100vh;
- background:radial-gradient(circle at 15% 5%,#28204f 0,transparent 32%),
- radial-gradient(circle at 85% 20%,#102b4b 0,transparent 30%),#08090d
-}
-.online-bar{
- display:flex;justify-content:center;gap:22px;flex-wrap:wrap;
- padding:9px 12px;background:#10111a;border-bottom:1px solid #ffffff12;
- color:#aeb3c2;font-size:12px
-}
-.online-bar b{color:#a995ff}
-nav{
- min-height:68px;display:flex;align-items:center;justify-content:space-between;
- padding:0 7%;border-bottom:1px solid #ffffff12;background:#08090dcc;
- position:sticky;top:0;z-index:20;backdrop-filter:blur(15px)
-}
-.logo{font-size:21px;font-weight:900;letter-spacing:1px}
-.logo span,h1 span{color:#8b70ff}
-.nav-status{font-size:13px;color:#a7acb8}
-.container{width:min(1050px,90%);margin:auto}
-.hero{text-align:center;padding:85px 0 50px}
-.badge{
- display:inline-block;padding:8px 14px;border-radius:30px;margin-bottom:20px;
- background:#8b70ff20;border:1px solid #8b70ff66;color:#b7a8ff;
- font-size:12px;font-weight:bold
-}
-h1{font-size:clamp(44px,8vw,78px);letter-spacing:-3px;line-height:1}
-.hero p{max-width:680px;margin:22px auto;color:#a7acb8;line-height:1.8}
-.clock{
- display:inline-block;margin-top:12px;padding:13px 18px;border-radius:13px;
- background:#ffffff08;border:1px solid #ffffff12;color:#d7d9e0;font-size:14px
-}
-section{margin:24px 0}
-.card{
- padding:28px;border-radius:22px;background:#ffffff08;
- border:1px solid #ffffff12;box-shadow:0 20px 60px #0003
-}
-.card h2{font-size:24px;margin-bottom:12px}
-.card>p{color:#a7acb8;line-height:1.7}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}
-.info-box{padding:20px;border-radius:16px;background:#ffffff06;border:1px solid #ffffff0e}
-.info-box h3{font-size:16px;margin-bottom:8px}
-.info-box p{font-size:14px;line-height:1.7;color:#a7acb8}
-.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
-.time-box{padding:18px 8px;text-align:center;border-radius:15px;background:#8b70ff12;border:1px solid #8b70ff30}
-.time-number{font-size:30px;font-weight:900}
-.time-label{font-size:11px;color:#a7acb8;margin-top:5px}
-.release-info{margin-top:18px;padding:15px;border-radius:12px;background:#ffffff08;color:#d5d7df;line-height:1.6}
-.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.btn{
- display:inline-flex;align-items:center;justify-content:center;padding:13px 17px;
- border:0;border-radius:12px;background:#8063ff;color:#fff;text-decoration:none;
- font-size:14px;font-weight:bold;cursor:pointer;transition:.2s
-}
-.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.btn.secondary{background:#ffffff0d;border:1px solid #ffffff18}
-.btn.chat{background:linear-gradient(135deg,#8063ff,#4169ff)}
-.btn.danger{background:#ff55551a;color:#ff9999;border:1px solid #ff555533}
-.input{
- display:block;width:100%;padding:13px;margin:10px 0;border-radius:11px;
- background:#090a10;color:white;border:1px solid #ffffff20;font-size:14px
-}
-.input:focus{outline:1px solid #8063ff}
-footer{text-align:center;color:#737887;padding:45px 15px;font-size:12px}
-.owner-button{
- position:fixed;right:17px;bottom:17px;z-index:40;width:46px;height:46px;
- border-radius:50%;background:#151621;color:white;border:1px solid #ffffff25;
- cursor:pointer;opacity:.7
-}
-.owner-button:hover{opacity:1}
-.modal{
- display:none;position:fixed;inset:0;z-index:100;padding:18px;
- align-items:center;justify-content:center;background:#000b;backdrop-filter:blur(8px)
-}
-.modal.active{display:flex}
-.modal-box{
- width:min(430px,100%);padding:27px;border-radius:21px;
- background:#11131c;border:1px solid #ffffff1a;box-shadow:0 25px 80px #0009
-}
-.modal-box h2{margin-bottom:10px}
-.modal-box p{font-size:14px;line-height:1.6;color:#a7acb8;margin-bottom:15px}
-.error{display:none;color:#ff8181;font-size:13px;margin:8px 0}
-.owner-panel{display:none}
-.owner-panel.active{display:block}
-.role-tag{
- display:inline-block;padding:6px 10px;margin-bottom:14px;border-radius:8px;
- background:#8063ff20;color:#b8a8ff;font-size:12px;font-weight:bold
-}
-.small{font-size:12px;color:#777d89;line-height:1.6;margin-top:12px}
-[hidden]{display:none!important}
-@media(max-width:650px){
- nav{padding:0 5%}.nav-status{font-size:11px}
- .hero{padding-top:60px}.grid{grid-template-columns:1fr}
- .countdown{grid-template-columns:repeat(2,1fr)}
- .card{padding:21px}h1{letter-spacing:-2px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACZKA HUB — Logowanie</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #0b0b12;
+      color: #f5f5ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .panel {
+      width: 100%;
+      max-width: 420px;
+      padding: 28px;
+      border: 1px solid #37304f;
+      border-radius: 20px;
+      background: #151420;
+      box-shadow: 0 0 35px #7040ff20;
+    }
+    h1 { text-align: center; margin-top: 0; }
+    .subtitle { text-align: center; color: #aaa5c2; }
+    label {
+      display: block;
+      margin: 16px 0 7px;
+    }
+    input {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #403957;
+      background: #0d0c14;
+      color: white;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 16px;
+      border: 0;
+      border-radius: 10px;
+      background: #8250ff;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #6936ed; }
+    .secondary {
+      background: #292638;
+    }
+    .message {
+      min-height: 22px;
+      margin-top: 14px;
+      text-align: center;
+      color: #ff8080;
+    }
+    .hidden { display: none; }
+    .role {
+      text-align: center;
+      color: #c2aaff;
+      padding: 10px;
+      border-radius: 10px;
+      background: #8250ff18;
+    }
+    .note {
+      font-size: 12px;
+      color: #aaa5b8;
+      line-height: 1.5;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-<div class="online-bar">
- <span>👑 Właściciele online: <b id="ownersOnline">0</b></span>
- <span>🛠️ Technicy online: <b id="techniciansOnline">0</b></span>
- <span id="sessionStatus">⚪ Niezalogowany</span>
-</div>
-<nav>
- <div class="logo">PACZKA <span>HUB</span></div>
- <div class="nav-status">BETA 0.1.0</div>
-</nav>
-<main class="container">
- <header class="hero">
-  <div class="badge">BETA 0.1.0</div>
-  <h1>PACZKA <span>HUB</span></h1>
-  <p>Centrum moich projektów, gier i pomysłów. Tutaj znajdziesz informacje o projektach oraz planowanych testach beta.</p>
-  <div class="clock" id="clock">Ładowanie zegara…</div>
- </header>
- <section>
-  <div class="card">
-   <h2>🎮 Moja gra na Roblox</h2>
-   <p>Gra jest przygotowywana do testów beta. Termin może się zmienić w trakcie prac.</p>
-   <div class="countdown">
-    <div class="time-box"><div class="time-number" id="days">0</div><div class="time-label">DNI</div></div>
-    <div class="time-box"><div class="time-number" id="hours">0</div><div class="time-label">GODZIN</div></div>
-    <div class="time-box"><div class="time-number" id="minutes">0</div><div class="time-label">MINUT</div></div>
-    <div class="time-box"><div class="time-number" id="seconds">0</div><div class="time-label">SEKUND</div></div>
-   </div>
-   <div class="release-info"><strong>Planowany termin:</strong> <span id="releaseText"></span></div>
-  </div>
- </section>
- <section>
-  <div class="card">
-   <h2>👋 O mnie</h2>
-   <p>Lubię tworzyć projekty, eksperymentować z pomysłami i rozwijać własne gry.</p>
-   <div class="grid">
-    <div class="info-box"><h3>💻 Programowanie</h3><p>Strony internetowe, skrypty i nowe pomysły.</p></div>
-    <div class="info-box"><h3>🎮 Gry</h3><p>Roblox i tworzenie własnych doświadczeń.</p></div>
-    <div class="info-box"><h3>🚢 Statki</h3><p>Projekty statków i konstrukcje inspirowane Titanikiem.</p></div>
-    <div class="info-box"><h3>🛠️ Projekty</h3><p>Budowanie, testowanie i ulepszanie pomysłów.</p></div>
-   </div>
-  </div>
- </section>
- <section>
-  <div class="card">
-   <h2>🚀 Projekty</h2>
-   <div class="grid">
-    <div class="info-box"><h3>PACZKA HUB</h3><p>Moje centrum projektów internetowych.</p></div>
-    <div class="info-box"><h3>Roblox</h3><p>Własne gry i projekty tworzone w Roblox Studio.</p></div>
-    <div class="info-box"><h3>Minecraft</h3><p>Budowle, statki i projekty techniczne.</p></div>
-    <div class="info-box"><h3>Nowe pomysły</h3><p>Kolejne projekty w przygotowaniu.</p></div>
-   </div>
-  </div>
- </section>
- <section>
-  <div class="card">
-   <h2>📋 Dziennik zmian</h2>
-   <div class="info-box">
-    <h3>BETA 0.1.0</h3>
-    <p>• licznik beta testów<br>• zegar polski<br>• sekcja projektów<br>• logowanie właściciela i technika<br>• prywatny chat techniczny</p>
-   </div>
-  </div>
- </section>
- <section>
-  <div class="card">
-   <h2>📨 Kontakt</h2>
-   <p>W sprawach dotyczących projektu możesz napisać na adres kontaktowy.</p>
-   <div class="button-row">
-    <a class="btn" href="mailto:kontaktpaczkahub@gmail.com">Napisz wiadomość</a>
-    <a class="btn secondary" href="https://www.roblox.com/users/5868743919/profile" target="_blank" rel="noopener noreferrer">Mój Roblox</a>
-   </div>
-  </div>
- </section>
- <!-- PANEL DOSTĘPNY PO ZALOGOWANIU -->
- <section id="accountPanel" class="owner-panel">
-  <div class="card">
-   <div class="role-tag" id="roleTag">ZALOGOWANO</div>
-   <h2 id="panelTitle">Panel konta</h2>
-   <p id="panelDescription">Prywatne funkcje PACZKA HUB.</p>
-   <div class="info-box" id="technicianChat">
-    <h3>💬 Chat techniczny</h3>
-    <p>Otwórz udostępniony chat techniczny.</p>
-    <div class="button-row">
-     <a class="btn chat" href="https://chatgpt.com/share/6ac7ec6b-55b8-83ed-b110-c60441f8e200" target="_blank" rel="noopener noreferrer">💬 Dołącz do chatu</a>
-    </div>
-   </div>
-   <div id="dateControls" hidden>
-    <div class="release-info">Aktualny termin: <strong id="ownerCurrentDate"></strong></div>
-    <label for="newReleaseDate">Nowa data beta testów:</label>
-    <input class="input" type="datetime-local" id="newReleaseDate">
-    <div class="button-row">
-     <button class="btn" id="changeDateButton">📅 Zmień datę</button>
-     <button class="btn secondary" id="resetDateButton">Przywróć datę domyślną</button>
-    </div>
-   </div>
-   <div class="button-row">
-    <button class="btn danger" id="logoutButton">Wyloguj</button>
-   </div>
-   <div class="small">Panel jest widoczny po zalogowaniu. W tej wersji ustawienia daty zapisują się lokalnie w przeglądarce.</div>
-  </div>
- </section>
-</main>
-<footer>© 2026 PACZKA HUB • BETA 0.1.0</footer>
-<button class="owner-button" id="openLoginButton" title="Logowanie">🔒</button>
-<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
- <div class="modal-box">
-  <h2 id="loginTitle">🔐 Logowanie</h2>
-  <p>Wybierz rodzaj konta i wpisz dane logowania.</p>
-  <form id="loginForm">
-   <label for="accountType">Rodzaj konta</label>
-   <select class="input" id="accountType">
-    <option value="owner">Właściciel</option>
-    <option value="technician">Technik</option>
-   </select>
-   <label for="username">Login</label>
-   <input class="input" id="username" type="text" placeholder="Login" autocomplete="username" required>
-   <label for="password">Hasło</label>
-   <input class="input" id="password" type="password" placeholder="Hasło" autocomplete="current-password" required>
-   <div class="error" id="loginError" role="alert">Nieprawidłowy login lub hasło.</div>
-   <div class="button-row">
-    <button class="btn" type="submit">Zaloguj</button>
-    <button class="btn secondary" type="button" id="cancelLoginButton">Anuluj</button>
-   </div>
-  </form>
- </div>
-</div>
-<script>
-"use strict";
-/*
-  USTAWIENIA KONTA:
-  Właściciel: kubap + ustawione przez Ciebie hasło.
-  Technik: technik / technik123.
-  Uwaga: hasło zapisane w pliku HTML można odczytać z kodu.
-  To demonstracyjny system ról, nie bezpieczne uwierzytelnianie serwerowe.
-*/
-const OWNER_LOGIN = "owner";
-const OWNER_PASSWORD = "owner1";
-const TECHNICIAN_LOGIN = "technik";
-const TECHNICIAN_PASSWORD = "technik1";
-const DEFAULT_RELEASE = "2026-10-20T18:00";
-const $ = id => document.getElementById(id);
-let releaseDate;
-function loadReleaseDate() {
- const saved = localStorage.getItem("paczkaHubRelease");
- const parsed = saved ? new Date(saved) : new Date(DEFAULT_RELEASE);
- releaseDate = Number.isNaN(parsed.getTime()) ? new Date(DEFAULT_RELEASE) : parsed;
-}
-function formatDate(date) {
- return new Intl.DateTimeFormat("pl-PL", {
-  timeZone: "Europe/Warsaw",
-  day: "numeric", month: "long", year: "numeric",
-  hour: "2-digit", minute: "2-digit"
- }).format(date);
-}
-function updateClock() {
- $("clock").textContent = new Intl.DateTimeFormat("pl-PL", {
-  timeZone: "Europe/Warsaw",
-  weekday: "long", year: "numeric", month: "long", day: "numeric",
-  hour: "2-digit", minute: "2-digit", second: "2-digit"
- }).format(new Date());
-}
-function updateCountdown() {
- const difference = releaseDate.getTime() - Date.now();
- const secondsLeft = Math.max(0, Math.floor(difference / 1000));
- $("days").textContent = Math.floor(secondsLeft / 86400);
- $("hours").textContent = Math.floor((secondsLeft % 86400) / 3600);
- $("minutes").textContent = Math.floor((secondsLeft % 3600) / 60);
- $("seconds").textContent = secondsLeft % 60;
- $("releaseText").textContent = formatDate(releaseDate);
- $("ownerCurrentDate").textContent = formatDate(releaseDate);
-}
-/* Lokalny wskaźnik zalogowanej sesji, a nie globalny licznik strony. */
-function updateOnlineCounters() {
- const role = sessionStorage.getItem("paczkaHubRole");
- $("ownersOnline").textContent = role === "owner" ? "1" : "0";
- $("techniciansOnline").textContent = role === "technician" ? "1" : "0";
- $("sessionStatus").textContent =
-  role === "owner" ? "🟣 Właściciel zalogowany" :
-  role === "technician" ? "🔵 Technik zalogowany" :
-  "⚪ Niezalogowany";
-}
-function openLogin() {
- $("loginError").style.display = "none";
- $("loginModal").classList.add("active");
- $("username").focus();
-}
-function closeLogin() {
- $("loginModal").classList.remove("active");
- $("loginError").style.display = "none";
-}
-function updateAccountPanel() {
- const role = sessionStorage.getItem("paczkaHubRole");
- const loggedIn = role === "owner" || role === "technician";
- $("accountPanel").classList.toggle("active", loggedIn);
- $("dateControls").hidden = role !== "owner";
- if (role === "owner") {
-  $("roleTag").textContent = "👑 WŁAŚCICIEL";
-  $("panelTitle").textContent = "Panel właściciela";
-  $("panelDescription").textContent =
-   "Masz dostęp do chatu technicznego i ustawień terminu beta.";
- } else if (role === "technician") {
-  $("roleTag").textContent = "🛠️ TECHNIK";
-  $("panelTitle").textContent = "Panel technika";
-  $("panelDescription").textContent =
-   "Masz dostęp do chatu technicznego. Zmiana terminu beta jest dostępna tylko dla właściciela.";
- }
- updateOnlineCounters();
-}
-$("loginForm").addEventListener("submit", event => {
- event.preventDefault();
- const type = $("accountType").value;
- const username = $("username").value.trim();
- const password = $("password").value;
- let role = null;
- if (type === "owner" &&
-     username === OWNER_LOGIN &&
-     OWNER_PASSWORD !== "TU_WPISZ_SWOJE_HASLO" &&
-     password === OWNER_PASSWORD) {
-  role = "owner";
- }
- if (type === "technician" &&
-     username === TECHNICIAN_LOGIN &&
-     password === TECHNICIAN_PASSWORD) {
-  role = "technician";
- }
- if (!role) {
-  $("loginError").style.display = "block";
-  return;
- }
- sessionStorage.setItem("paczkaHubRole", role);
- closeLogin();
- updateAccountPanel();
- $("accountPanel").scrollIntoView({behavior:"smooth", block:"start"});
-});
-$("openLoginButton").addEventListener("click", openLogin);
-$("cancelLoginButton").addEventListener("click", closeLogin);
-$("loginModal").addEventListener("click", event => {
- if (event.target === $("loginModal")) closeLogin();
-});
-$("logoutButton").addEventListener("click", () => {
- sessionStorage.removeItem("paczkaHubRole");
- updateAccountPanel();
- $("accountPanel").scrollIntoView({behavior:"smooth", block:"start"});
-});
-$("changeDateButton").addEventListener("click", () => {
- if (sessionStorage.getItem("paczkaHubRole") !== "owner") {
-  alert("Tylko właściciel może zmienić datę.");
-  return;
- }
- const value = $("newReleaseDate").value;
- if (!value) {
-  alert("Najpierw wybierz datę i godzinę.");
-  return;
- }
- const chosen = new Date(value);
- if (Number.isNaN(chosen.getTime())) {
-  alert("Nieprawidłowa data.");
-  return;
- }
- releaseDate = chosen;
- localStorage.setItem("paczkaHubRelease", releaseDate.toISOString());
- updateCountdown();
- alert("Zmieniono termin beta testów w tej przeglądarce.");
-});
-$("resetDateButton").addEventListener("click", () => {
- if (sessionStorage.getItem("paczkaHubRole") !== "owner") {
-  alert("Tylko właściciel może zmienić datę.");
-  return;
- }
- releaseDate = new Date(DEFAULT_RELEASE);
- localStorage.removeItem("paczkaHubRelease");
- updateCountdown();
- alert("Przywrócono domyślną datę beta testów.");
-});
-loadReleaseDate();
-updateClock();
-updateCountdown();
-updateAccountPanel();
-setInterval(updateClock, 1000);
-setInterval(updateCountdown, 1000);
-</script>
+  <main class="panel">
+    <section id="loginPanel">
+      <h1>📦 PACZKA HUB</h1>
+      <p class="subtitle">Zaloguj się do panelu</p>
+      <form id="loginForm">
+        <label for="username">Login</label>
+        <input id="username" autocomplete="username"
+               placeholder="Wpisz login" required>
+        <label for="password">Hasło</label>
+        <input id="password" type="password"
+               autocomplete="current-password"
+               placeholder="Wpisz hasło" required>
+        <button type="submit">Zaloguj się</button>
+      </form>
+      <div id="message" class="message" role="status"></div>
+      <p class="note">
+        To jest demonstracyjne logowanie w HTML. Nie używaj go
+        do ochrony prywatnych danych — hasła zapisane w kodzie
+        strony można odczytać.
+      </p>
+    </section>
+    <section id="dashboard" class="hidden">
+      <h1>📦 PACZKA HUB</h1>
+      <p class="role" id="roleLabel"></p>
+      <div id="ownerTools" class="hidden">
+        <h2>Panel właściciela</h2>
+        <p>Masz dostęp do ustawień właściciela.</p>
+        <label for="betaDate">Data testów beta</label>
+        <input id="betaDate" type="datetime-local">
+        <button id="saveDate">Zapisz datę</button>
+        <p id="dateMessage" class="subtitle"></p>
+      </div>
+      <div id="technicianTools" class="hidden">
+        <h2>Panel technika</h2>
+        <p>Jesteś zalogowany jako technik.</p>
+        <p>Możesz korzystać z panelu technika.</p>
+      </div>
+      <button class="secondary" id="logoutButton">
+        Wyloguj się
+      </button>
+    </section>
+  </main>
+  <script>
+    "use strict";
+    // Dane logowania — demonstracja, nie bezpieczne uwierzytelnianie.
+    const ACCOUNTS = {
+      wlasciciel: {
+        password: "wlasciciel",
+        role: "owner"
+      },
+      technik: {
+        password: "technik1",
+        role: "technician"
+      }
+    };
+    const loginForm = document.getElementById("loginForm");
+    const loginPanel = document.getElementById("loginPanel");
+    const dashboard = document.getElementById("dashboard");
+    const message = document.getElementById("message");
+    const ownerTools = document.getElementById("ownerTools");
+    const technicianTools = document.getElementById("technicianTools");
+    const roleLabel = document.getElementById("roleLabel");
+    loginForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value
+        .trim().toLowerCase();
+      const password = document.getElementById("password").value;
+      const account = ACCOUNTS[username];
+      if (!account || account.password !== password) {
+        message.textContent = "❌ Nieprawidłowy login lub hasło.";
+        return;
+      }
+      message.textContent = "";
+      loginPanel.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+      ownerTools.classList.add("hidden");
+      technicianTools.classList.add("hidden");
+      if (account.role === "owner") {
+        roleLabel.textContent = "Zalogowano jako WŁAŚCICIEL";
+        ownerTools.classList.remove("hidden");
+      } else {
+        roleLabel.textContent = "Zalogowano jako TECHNIK";
+        technicianTools.classList.remove("hidden");
+      }
+    });
+    document.getElementById("saveDate").addEventListener("click", function() {
+      const value = document.getElementById("betaDate").value;
+      const dateMessage = document.getElementById("dateMessage");
+      if (!value) {
+        dateMessage.textContent = "Najpierw wybierz datę.";
+        return;
+      }
+      dateMessage.textContent =
+        "Data ustawiona w tym panelu: " +
+        new Date(value).toLocaleString("pl-PL");
+      // To demo nie zapisuje daty na serwerze ani dla innych odwiedzających.
+    });
+    document.getElementById("logoutButton").addEventListener("click", function() {
+      dashboard.classList.add("hidden");
+      loginPanel.classList.remove("hidden");
+      loginForm.reset();
+      message.textContent = "";
+      document.getElementById("dateMessage").textContent = "";
+    });
+  </script>
 </body>
 </html>
